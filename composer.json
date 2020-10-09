@@ -1,0 +1,29 @@
+{
+  "name": "jovem_blood/server-list",
+  "description": "a vote-based discord sever list",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Thiago conceição Peixoto",
+      "email": "thiagopeixot13@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "config": {
+    "vendor-dir": "vendor"
+  },
+  "autoload": {
+    "psr-4": {
+      "Source\\": "source/"
+    },
+    "files": [
+      "source/config.php"
+    ]
+  },
+  "require": {
+    "coffeecode/router": "1.0.*",
+    "league/plates": "4.0.0-alpha",
+    "coffeecode/datalayer": "^1.1"
+  }
+}
