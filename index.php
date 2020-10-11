@@ -17,13 +17,33 @@ $router->group(null);
 
 $router->get('/', "Web:home");
 
-
-$router->get('/logout', function () {
-    session_destroy();
-    header('Location: ' . URL_BASE);
-});
-
 $router->get('/login', "Web:login");
+
+$router->get('/logout', "Web:logout");
+
+$router->get('/profile', "Web:profile");
+
+/*
+ * Servers
+ * */
+
+$router->group('servers');
+
+$router->get('/{serverId}', "Web:server");
+
+
+/*
+ * Errors
+ */
+
+$router->group("ooops");
+
+
+$router->get("/{errcode}", "web:error");
 
 
 $router->dispatch();
+
+if ($router->error()) {
+    $router->redirect("/ooops/{$router->error()}");
+}

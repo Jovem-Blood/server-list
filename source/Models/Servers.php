@@ -12,4 +12,14 @@ class Servers extends DataLayer
         parent::__construct("servers", ["icon", "votes", "usersCount", "emoteCount", "name", "description"], "id", false);
     }
 
+    public function serversIds()
+    {
+        $servers = $this->find()->fetch(true);
+        $ids = [];
+        foreach ($servers as $server) {
+            array_push($ids,$server->server_id);
+        }
+        return $ids;
+    }
+
 }
