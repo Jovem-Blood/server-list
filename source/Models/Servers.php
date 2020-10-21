@@ -9,7 +9,7 @@ class Servers extends DataLayer
 
     public function __construct()
     {
-        parent::__construct("servers", ["icon", "votes", "usersCount", "emoteCount", "name", "description"], "id", false);
+        parent::__construct("servers", [], "id", false);
     }
 
     public function serversIds()

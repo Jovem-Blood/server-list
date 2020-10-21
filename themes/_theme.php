@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <title><?= $title ?></title>
-
     <style>
         body {
             padding: 0;
@@ -93,16 +92,21 @@
             color: black !important;
         }
     </style>
+
+    <?= $v->section('styles')?>
 </head>
 
 
 <body>
 <?php $v->insert('components/navbar',['profile' => isset($profile)?true:false]); // Navbar?>
 
-<?= $v->section('content')  ?>
+<div id="app">
+    <?= $v->section('content') ?>
+</div>
 
-<?php $v->insert('components/scripts') // Scripts ?>
 
+<?= $v->insert('components/scripts') // Global Scripts ?>
+<?= $v->section('scripts')?>
 </body>
 
 </html>

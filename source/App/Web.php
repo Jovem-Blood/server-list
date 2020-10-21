@@ -4,47 +4,39 @@ namespace Source\App;
 
 use League\Plates\Engine;
 use Source\Models\Servers;
-
-
+use Source\Models\Times;
 
 
 class Web
 {
-    private $view;
-
+    private Engine $view;
     public function __construct()
     {
+        $session = new Session();
+        $user = new User();
         $this->view = Engine::create(__DIR__ . "/../../themes", "php");
-        if(isset($_SESSION['user'])) {
-        $this->view->addData(['user' => $_SESSION['user']]);
+        if($session->has('user')) {
+            $this->view->addData(['user' => $user]);
         }
     }
 
     public function home()
     {
-        $servers = new Servers();
+        echo $this->view->render("home", [
+            'title' => 'Server-List',
+            'servers' => (new Servers())->find()->limit(6)->order("votes DESC")->fetch(true)
+        ]);
 
-        if (isset($_SESSION['user'])) {
-            echo $this->view->render("home", [
-                'title' => 'Server-List',
-                'guild' => $_SESSION['guilds'],
-                'servers' => $servers->find()->fetch(true)
-            ]);
-        } else {
-            echo $this->view->render("home", [
-                'title' => 'Server-List',
-                'servers' => $servers->find()->fetch(true)
-            ]);
-        }
     }
 
     public function profile()
     {
         $servers = new Servers();
-
-        if(isset($_SESSION['user'])){
+        $session = new Session();
+        $user = new User();
+        if($session->has('user')){
             echo $this->view->render("profile", [
-                'title' => 'Server-List | ' . $_SESSION['user']->username,
+                'title' => 'Server-List | ' . $user->getName(),
                 'guilds' => $_SESSION['guilds'],
                 'servers' => $servers->serversIds(),
                 'profile' => true
@@ -94,11 +86,13 @@ class Web
         }
 
         if (session('access_token')) {
+            $session = new Session();
             $user = apiRequest($apiURLBase);
             $guilds = apiRequest('https://discord.com/api/users/@me/guilds');
 
-            $_SESSION['user'] = $user;
-            $_SESSION['guilds'] = $guilds;
+            $session->set('user', $user);
+            $session->set('guilds', $guilds);
+
             header('Location: '. url());
             die();
         } else {
@@ -121,7 +115,10 @@ class Web
             $this->error([
                 'errcode' => '404'
             ]);
+            die();
         } else {
+            $time = new \DateTime();
+            $time = $time->add(new \DateInterval('PT12H'));
 
             $servers = new Servers();
             if(in_array($urlId, $servers->serversIds())) {
@@ -129,11 +126,90 @@ class Web
                 echo $this->view->render('servers',[
                     'title' => 'Server-List | ' . $server->name,
                     'server' => $server,
+                    'time' => $time->format('c')
                 ]);
             } else {
                 echo 'Servidor Não encontrado...';
             }
         }
+    }
+
+    public function vote($data)
+    {
+        if(strlen($data['serverId']) <> 18) {
+            $this->error([
+                'errcode' => '404'
+            ]);
+            die();
+        }
+        $servers = (new Servers())->serversIds();
+        if(!in_array($data['serverId'], $servers)) {
+            $this->error([
+                'errcode' => '404'
+            ]);
+            die();
+        }
+        $session = new Session();
+        if(!$session->has('user')) {
+            header('Location: ' . url('login'));
+            die();
+        }
+
+        $times = new Times();
+        $result = $times->getTime($session->user->id, $data['serverId']);
+        if($result) {
+            //$userTime = new \DateTime('2020-10-05T04:05:18.134-03:00');
+            $userTime = new \DateTime($result->time);
+            $now = new \DateTime();
+            $server = (new Servers())->find('server_id = :sId','sId='.$data['serverId'])->fetch();
+            if($now >= $userTime) {
+                $server->votes +=1;
+                $server->save();
+                $newTime = (new Times())->findById($result->id);
+                $newTime->time = $now->add(new \DateInterval('PT12H'))->format('c');
+                $newTime->updatedAt = date('Y-m-d H:i:s');
+                $newTime->save();
+                echo $this->view->render('vote-page', [
+                    'title' => 'Server-list |'. $server->name,
+                    'canVote' => true,
+                    'timer' => $newTime->time,
+                    'serverName' => $server->name,
+                    'votes' => $server->votes
+                ]);
+            } else {
+                echo $this->view->render('vote-page', [
+                    'title' => 'Server-List |'. $server->name,
+                    'canVote' => false,
+                    'timer' => $userTime->format('c')
+                ]);
+            }
+        } else {
+            //echo 'nada encontrado';
+            $now = new \DateTime();
+            $newTime = new Times();
+            $server = (new Servers())->findById($data['serverId']);
+            $server->votes +=1;
+            $server->save();
+
+            $newTime->user_id = $session->user->id;
+            $newTime->server_id = $data['serverId'];
+            $newTime->time = $now->add(new \DateInterval('PT12H'))->format('c');
+            $newTime->createdAt=date('Y-m-d H:i:s');
+            $newTime->updatedAt=date('Y-m-d H:i:s');
+            $newTime->save();
+
+            vd($newTime);
+            vd($server);
+        }
+
+    }
+
+    public function join($data)
+    {
+        $urlId = $data['serverId'];
+        $servers = new Servers();
+        $server = $servers->find("server_id = :sId", "sId=". $urlId)->fetch();
+        vd($server->invite);
     }
 
     public function error($data)

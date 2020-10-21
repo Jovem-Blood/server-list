@@ -5,7 +5,7 @@
     <?php if (isset($user)):?>
         <div class="userName dropdown">
             <a class="dropdown-toggle"  role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <img src="<?= userIcon($user->id, $user->avatar);?>" alt="user avatar"><span style="font-weight: bold"><?= $user->username?></span></a>
+                <img src="<?= $user->getAvatar();?>" alt="user avatar"><span style="font-weight: bold"><?= $user->getName()?></span></a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <a class="dropdown-item" href=<?= url('logout') ?>>Logout</a>
                 <a class="dropdown-item <?=$profile==true?'disabled':''?>" href=<?= url('profile') ?>>Perfil</a>
