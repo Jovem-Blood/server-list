@@ -25,6 +25,8 @@
   "require": {
     "coffeecode/router": "1.0.*",
     "league/plates": "4.0.0-alpha",
-    "coffeecode/datalayer": "^1.1"
+    "coffeecode/datalayer": "^1.1",
+    "ext-json": "*",
+    "ext-curl": "*"
   }
 }

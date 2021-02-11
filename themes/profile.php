@@ -7,7 +7,7 @@
             if($guild->permissions == '2147483647'):?>
                 <li class="list-group-item d-flex justify-content-between"><?=$guild->name;
                 if(in_array($guild->id, $servers)): ?>
-                    <a href="#configs">
+                    <a href="<?= url('config/'.$guild->id) ?>">
                         <button class="btn btn-sm btn-primary">Configs</button>
                     </a>
                 <?php else: ?>

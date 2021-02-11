@@ -31,6 +31,15 @@ $v->start('styles')?>
         <div class="image">
             <img src="<?=$server->icon==''? url('themes/dist/images/noicon.png'):$server->icon.'?size=512'?>" alt="server icon" width="260" class="shadow">
         </div>
+        <?php if(!empty($tags)): ?>
+        <div class="d-flex">
+            <?php foreach($tags as $tag): ?>
+                <a href="#">
+                    <div class="badge badge-primary"><?=$tag->name?></div>
+                </a>
+            <?php endforeach;?>
+        </div>
+        <?php endif; ?>
         <div class="description">
             <span class="badge badge-secondary"><?=$server->votes?> Votos</span>
             <p><?= $server->description?></p>
@@ -41,4 +50,3 @@ $v->start('styles')?>
         </div>
     </div>
 </div>
-

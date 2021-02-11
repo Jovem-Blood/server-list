@@ -11,8 +11,14 @@ module.exports = {
         path: path.resolve(__dirname, 'themes/dist'),
     },
     mode: 'development',
+    devtool: "source-map",
     module: {
         rules: [
+            {
+                test: /\.js$/,
+                enforce: 'pre',
+                use: ['source-map-loader'],
+            },
             {
                 test: /\.vue$/,
                 loader: 'vue-loader'
@@ -37,7 +43,18 @@ module.exports = {
             'process.env': {
                 NODE_ENV: JSON.stringify('development')
             }
+        }),
+        new webpack.SourceMapDevToolPlugin({
+            filename: "[file].map"
         })
     ],
+    watch: true,
+    watchOptions: {
+        ignored: [
+            '/node_modules/',
+            '/vendor/',
+            '*.php'
+        ],
+    },
 
 };

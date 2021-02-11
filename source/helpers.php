@@ -1,4 +1,11 @@
 <?php
+
+use Source\App\Session;
+
+/**
+ * @param string|null $url
+ * @return string
+ */
 function url (string $url = null): string
 {
     if ($url) {
@@ -8,6 +15,21 @@ function url (string $url = null): string
 }
 
 
+function redirect(string $url = null):void
+{
+    if($url) {
+        header('Location: '. URL_BASE . "/$url");
+        die();
+    }
+    header('Location: '. URL_BASE);
+    die();
+}
+
+/**
+ * @param string $userId
+ * @param $userIcon
+ * @return string
+ */
 function userIcon (string $userId, $userIcon): string
 {
 
@@ -15,10 +37,19 @@ function userIcon (string $userId, $userIcon): string
 
 }
 
+/**
+ * @param string $serverId
+ * @param $serverIcon
+ * @return string
+ */
 function serverIcon (string $serverId, $serverIcon):string {
     return 'https://cdn.discordapp.com/icons/' . $serverId . '/'. $serverIcon . '.webp';
 }
 
+/**
+ * @param string|null $id
+ * @return string
+ */
 function addBot(string $id=null) {
     if($id) {
         return 'https://discord.com/oauth2/authorize?client_id='. $id .'&permissions=387136&scope=bot';
@@ -28,6 +59,12 @@ function addBot(string $id=null) {
 }
 
 
+/**
+ * @param $url
+ * @param bool $post
+ * @param array $headers
+ * @return mixed
+ */
 function apiRequest($url, $post = FALSE, $headers = array())
 {
     $ch = curl_init($url);
@@ -51,21 +88,68 @@ function apiRequest($url, $post = FALSE, $headers = array())
     return json_decode($response);
 }
 
+/**
+ * @param $key
+ * @param null $default
+ * @return mixed|null
+ */
 function get($key, $default = NULL)
 {
     return array_key_exists($key, $_GET) ? $_GET[$key] : $default;
 }
 
+/**
+ * @param $key
+ * @param null $default
+ * @return mixed|null
+ */
 function session($key, $default = NULL)
 {
     return array_key_exists($key, $_SESSION) ? $_SESSION[$key] : $default;
 }
 
 
+/**
+ * @param object $session
+ * @return bool
+ */
+function isLoged(object $session): bool
+{
+    if(!$session->has('user')) {
+        return false;
+    }
+    return true;
+}
+
+/**
+ * @return string
+ */
+function csrf_input(): string
+{
+    $csrf = (new Session());
+    $csrf->csrf();
+    return '<input type="hidden" name="csrf" value="'.($csrf->csrf_token ?? "" ).'"/>';
+}
+
+/**
+ * @param $request
+ * @return bool
+ */
+function csrf_verify($request): bool
+{
+    if(empty((new Session())->csrf_token) || empty($request['csrf']) || $request['csrf'] != (new Session())->csrf_token) {
+        return true;
+    }
+    return true;
+}
+
 /*
  * for Debug
  * */
 
+/**
+ * @param $var
+ */
 function vd($var)
 {
     echo "<pre>";

@@ -4,6 +4,7 @@ session_start();
 
 use CoffeeCode\Router\Router;
 
+
 $router = new Router(URL_BASE);
 $router->namespace("Source\App");
 
@@ -26,10 +27,21 @@ $router->group('servers');
 
 $router->get('/{serverId}', "Web:server");
 
-$router->get('/{serverId}/vote',"Web:vote");
+$router->get('/{serverId}/vote', "Web:vote");
 
-$router->get('/{serverId}/join',"Web:join");
+$router->get('/{serverId}/join', "Web:join");
 
+$router->group('config');
+
+$router->get('/{serverId}', "Web:config");
+$router->post('/{serverId}', "Web:form");
+/*
+ * API
+ */
+$router->group('api');
+$router->post('/test', "Api:test");
+
+//:TODO criar uma rota para onde o formulário das configurações enviar os campos preenchidos
 /*
  * Errors and Dispatch
  */
