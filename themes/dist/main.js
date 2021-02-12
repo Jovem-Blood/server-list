@@ -1,33 +1,23 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EditForm.vue?vue&type=style&index=0&id=64596f4e&scoped=true&lang=css&":
-/*!*****************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EditForm.vue?vue&type=style&index=0&id=64596f4e&scoped=true&lang=css& ***!
-  \*****************************************************************************************************************************************************************************************************************************************************************/
-/*! namespace exports */
-/*! export default [provided] [no usage info] [missing usage info prevents renaming] */
-/*! other exports [not provided] [no usage info] */
-/*! runtime requirements: __webpack_require__, __webpack_require__.n, __webpack_exports__, __webpack_require__.r, module.id, __webpack_require__.d, __webpack_require__.*, module */
-/***/ ((module, __webpack_exports__, __webpack_require__) => {
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-2[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EditForm.vue?vue&type=style&index=0&id=64596f4e&scoped=true&lang=css&":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-2[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EditForm.vue?vue&type=style&index=0&id=64596f4e&scoped=true&lang=css& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! unknown exports (runtime-defined) */
+/*! runtime requirements: module, __webpack_require__, module.id */
+/*! CommonJS bailout: module.exports is used directly at 8:0-14 */
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
-/* harmony export */ });
-/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/cssWithMappingToString.js */ "./node_modules/css-loader/dist/runtime/cssWithMappingToString.js");
-/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
-/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
 // Imports
-
-
-var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
+var ___CSS_LOADER_API_SOURCEMAP_IMPORT___ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/cssWithMappingToString.js */ "./node_modules/css-loader/dist/runtime/cssWithMappingToString.js");
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(___CSS_LOADER_API_SOURCEMAP_IMPORT___);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.server-title[data-v-64596f4e] {\r\n  display: flex;\r\n  margin: 2%;\r\n  align-items: center;\n}\n.server-title h1[data-v-64596f4e] {\r\n  margin-left: 1%;\n}\ninput[data-v-64596f4e] {\r\n  width: 250px;\n}\n.form-area[data-v-64596f4e] {\r\n  display: flex;\r\n  height: 80vh;\r\n  align-items: center;\n}\r\n", "",{"version":3,"sources":["webpack://./resources/js/components/EditForm.vue"],"names":[],"mappings":";AA+HA;EACA,aAAA;EACA,UAAA;EACA,mBAAA;AACA;AACA;EACA,eAAA;AACA;AACA;EACA,YAAA;AACA;AAEA;EACA,aAAA;EACA,YAAA;EACA,mBAAA;AACA","sourcesContent":["<template>\r\n  <div class=\"form-area\">\r\n    <div :class=\"item.class\" v-for=\"item in code\" :key=\"item.message\">\r\n      <h4>\r\n        {{ item.message }}\r\n      </h4>\r\n    </div>\r\n    <br />\r\n    <form :action=\"formInfo.rote\" method=\"post\" @submit.prevent=\"send\">\r\n      <div class=\"w-75 m-auto form-group row\">\r\n        <label class=\"col-sm-4 col-form-label\" for=\"invite\">\r\n          Convite para o servidor(Tem que ser permanente)\r\n        </label>\r\n        <div class=\"col-sm-8\">\r\n          <input\r\n            class=\"form-control\"\r\n            type=\"text\"\r\n            id=\"invite\"\r\n            name=\"invite\"\r\n            v-model=\"formInfo.server.invite\"\r\n            placeholder=\"https://discord.gg/abcdfgh\"\r\n          />\r\n        </div>\r\n        <input type=\"hidden\" name=\"csrf\" value=\"{}\" />\r\n        <label class=\"col-sm-4 col-form-label\" for=\"description\"\r\n          >uma breve descrição sobre seu servidor</label\r\n        >\r\n        <div class=\"col-sm-8\">\r\n          <input\r\n            class=\"form-control\"\r\n            type=\"text\"\r\n            id=\"description\"\r\n            v-model=\"formInfo.server.description\"\r\n            name=\"description\"\r\n            placeholder=\"Um servidor amigável\"\r\n          />\r\n        </div>\r\n        <div class=\"col-sm m-3\">\r\n          <input class=\"btn btn-primary\" type=\"submit\" value=\"Editar\" />\r\n        </div>\r\n      </div>\r\n    </form>\r\n  </div>\r\n</template>\r\n\r\n<script>\r\nexport default {\r\n  name: \"Edit\",\r\n  props: {\r\n    content: String,\r\n  },\r\n  data() {\r\n    return {\r\n      formInfo: {\r\n        server: {\r\n          invite: \"\",\r\n          description: \"\",\r\n        },\r\n        rote: \"\",\r\n      },\r\n      code: [],\r\n    };\r\n  },\r\n  methods: {\r\n    send(e) {\r\n      let data = new FormData();\r\n      data.append(\"invite\", this.formInfo.server.invite);\r\n      data.append(\"description\", this.formInfo.server.description);\r\n      fetch(this.formInfo.rote, {\r\n        method: \"POST\",\r\n        body: data,\r\n      }).then((resp) => {\r\n        resp.text().then((code) => {\r\n          switch (code) {\r\n            case \"0\":\r\n              this.code.push({\r\n                class: \"badge badge-danger\",\r\n                message: \"Erro ao salvar, tente novamente mais tarde\",\r\n              });\r\n\r\n              break;\r\n            case \"1\":\r\n              this.code.push({\r\n                class: \"badge badge-success\",\r\n                message: \"Edição efeituada com sucesso!\",\r\n              });\r\n              break;\r\n            case \"2\":\r\n              this.code.push({\r\n                class: \"badge badge-danger\",\r\n                message: \"Preencha todos os campos do formuário\",\r\n              });\r\n              break;\r\n            case \"3\":\r\n              this.code.push({\r\n                class: \"badge badge-danger\",\r\n                message: \"Sua descrição é muito grande\",\r\n              });\r\n              break;\r\n            case \"23\":\r\n              this.code.push({\r\n                class: \"badge badge-danger\",\r\n                message: \"Preencha todos os campos do formuário\",\r\n              });\r\n              this.code.push({\r\n                class: \"badge badge-danger\",\r\n                message: \"Sua descrição é muito grande\",\r\n              });\r\n              break;\r\n          }\r\n\r\n          setTimeout(() => {\r\n            this.code.splice(0, this.code.length);\r\n          }, 5000);\r\n        });\r\n      });\r\n    },\r\n  },\r\n  created() {\r\n    if (this.content) {\r\n      this.formInfo = JSON.parse(this.content);\r\n    }\r\n  },\r\n};\r\n</script>\r\n\r\n<style scoped>\r\n.server-title {\r\n  display: flex;\r\n  margin: 2%;\r\n  align-items: center;\r\n}\r\n.server-title h1 {\r\n  margin-left: 1%;\r\n}\r\ninput {\r\n  width: 250px;\r\n}\r\n\r\n.form-area {\r\n  display: flex;\r\n  height: 80vh;\r\n  align-items: center;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.server-title[data-v-64596f4e] {\r\n  display: flex;\r\n  margin: 2%;\r\n  align-items: center;\n}\n.server-title h1[data-v-64596f4e] {\r\n  margin-left: 1%;\n}\n.form-area[data-v-64596f4e] {\r\n  display: flex;\r\n  height: 75vh;\r\n  align-items: center;\n}\n.messages-block[data-v-64596f4e] {\r\n  display: flex;\r\n  flex-direction: column;\r\n  width: 40%;\r\n  margin: auto;\r\n  text-align: center;\r\n  font-size: 1.4rem;\n}\n.message[data-v-64596f4e] {\r\n  margin: 2px;\r\n  padding: 3%;\n}\n.bounce-enter-active[data-v-64596f4e] {\r\n  animation: bounce-in-data-v-64596f4e 0.5s;\n}\n.bounce-leave-active[data-v-64596f4e] {\r\n  animation: bounce-in-data-v-64596f4e 0.5s reverse;\n}\n@keyframes bounce-in-data-v-64596f4e {\n0% {\r\n    transform: scale(0);\n}\n50% {\r\n    transform: scale(1.5);\n}\n100% {\r\n    transform: scale(1);\n}\n}\r\n", "",{"version":3,"sources":["webpack://./resources/js/components/EditForm.vue"],"names":[],"mappings":";AAwJA;EACA,aAAA;EACA,UAAA;EACA,mBAAA;AACA;AACA;EACA,eAAA;AACA;AAEA;EACA,aAAA;EACA,YAAA;EACA,mBAAA;AACA;AACA;EACA,aAAA;EACA,sBAAA;EACA,UAAA;EACA,YAAA;EACA,kBAAA;EACA,iBAAA;AACA;AACA;EACA,WAAA;EACA,WAAA;AACA;AACA;EACA,yCAAA;AACA;AACA;EACA,iDAAA;AACA;AACA;AACA;IACA,mBAAA;AACA;AACA;IACA,qBAAA;AACA;AACA;IACA,mBAAA;AACA;AACA","sourcesContent":["<template>\r\n  <div class=\"content\">\r\n    <transition-group name=\"bounce\" class=\"messages-block\">\r\n      <div :class=\"'message ' + item.class\" v-for=\"item in code\" :key=\"item.id\">\r\n        <span>\r\n          {{ item.message }}\r\n        </span>\r\n      </div>\r\n    </transition-group>\r\n    <div class=\"form-area\">\r\n      <form :action=\"formInfo.rote\" method=\"post\" @submit.prevent=\"send\">\r\n        <div class=\"w-75 m-auto form-group row\">\r\n          <label class=\"col-sm-4 col-form-label\" for=\"invite\">\r\n            Convite para o servidor(Tem que ser permanente)\r\n          </label>\r\n          <div class=\"col-sm-8\">\r\n            <input\r\n              class=\"form-control\"\r\n              type=\"text\"\r\n              id=\"invite\"\r\n              name=\"invite\"\r\n              v-model=\"formInfo.server.invite\"\r\n              placeholder=\"https://discord.gg/abcdfgh\"\r\n            />\r\n          </div>\r\n          <input type=\"hidden\" name=\"csrf\" value=\"{}\" />\r\n          <label class=\"col-sm-4 col-form-label\" for=\"description\"\r\n            >uma breve descrição sobre seu servidor</label\r\n          >\r\n          <div class=\"input-group col-sm-8\">\r\n            <input\r\n              class=\"form-control\"\r\n              type=\"text\"\r\n              id=\"description\"\r\n              v-model=\"formInfo.server.description\"\r\n              name=\"description\"\r\n              placeholder=\"Um servidor amigável\"\r\n            />\r\n            <div class=\"input-group-prepend\">\r\n              <div\r\n                class=\"input-group-text\"\r\n                v-bind:class=\"{ 'text-danger': descTooLong }\"\r\n              >\r\n                {{ counter }}\r\n              </div>\r\n            </div>\r\n          </div>\r\n          <div class=\"col-sm m-3\">\r\n            <input class=\"btn btn-primary\" type=\"submit\" value=\"Editar\" />\r\n          </div>\r\n        </div>\r\n      </form>\r\n    </div>\r\n  </div>\r\n</template>\r\n\r\n<script>\r\nexport default {\r\n  name: \"Edit\",\r\n  props: {\r\n    content: String,\r\n  },\r\n  data() {\r\n    return {\r\n      formInfo: {\r\n        server: {\r\n          invite: \"\",\r\n          description: \"\",\r\n        },\r\n        rote: \"\",\r\n      },\r\n      code: [],\r\n    };\r\n  },\r\n  methods: {\r\n    sendAlert(type, msg) {\r\n      type = type == 0 ? \"danger\" : \"success\";\r\n      this.code.push({\r\n        id: new Date().getTime(),\r\n        class: \"badge badge-\" + type,\r\n        message: msg,\r\n      });\r\n      setTimeout(() => {\r\n        this.code.splice(0, this.code.length);\r\n      }, 3000);\r\n    },\r\n    send() {\r\n      let canSend = true;\r\n      for (let camp in this.formInfo.server) {\r\n        if (this.formInfo.server[camp] == \"\") {\r\n          this.sendAlert(0, \"Preencha todos os campos do formuário\");\r\n          canSend = false;\r\n          break;\r\n        }\r\n      }\r\n      if (this.formInfo.server.description.length > 140) {\r\n        this.sendAlert(0, \"Sua descrição é muito grande\");\r\n        canSend = false;\r\n      }\r\n\r\n      if (canSend === true) {\r\n        let data = new FormData();\r\n        data.append(\"invite\", this.formInfo.server.invite);\r\n        data.append(\"description\", this.formInfo.server.description);\r\n        fetch(this.formInfo.rote, {\r\n          method: \"POST\",\r\n          body: data,\r\n        }).then((resp) => {\r\n          resp.text().then((code) => {\r\n            switch (code) {\r\n              case \"0\":\r\n                this.sendAlert(0, \"Erro ao salvar, tente novamente mais tarde\");\r\n                break;\r\n              case \"1\":\r\n                this.sendAlert(1, \"Edição efeituada com sucesso!\");\r\n                break;\r\n              case \"2\":\r\n                this.sendAlert(0, \"Preencha todos os campos do formuário\");\r\n                break;\r\n              case \"3\":\r\n                this.sendAlert(0, \"Sua descrição é muito grande\");\r\n                break;\r\n              case \"23\":\r\n                this.sendAlert(0, \"Preencha todos os campos do formuário\");\r\n                this.sendAlert(0, \"Sua descrição é muito grande\");\r\n                break;\r\n            }\r\n          });\r\n        });\r\n      }\r\n    },\r\n  },\r\n  computed: {\r\n    counter: function () {\r\n      return 140 - this.formInfo.server.description.length;\r\n    },\r\n    descTooLong: function () {\r\n      if (this.counter < 0) {\r\n        return true;\r\n      }\r\n      return false;\r\n    },\r\n  },\r\n  created() {\r\n    if (this.content) {\r\n      this.formInfo = JSON.parse(this.content);\r\n    }\r\n  },\r\n};\r\n</script>\r\n\r\n<style scoped>\r\n.server-title {\r\n  display: flex;\r\n  margin: 2%;\r\n  align-items: center;\r\n}\r\n.server-title h1 {\r\n  margin-left: 1%;\r\n}\r\n\r\n.form-area {\r\n  display: flex;\r\n  height: 75vh;\r\n  align-items: center;\r\n}\r\n.messages-block {\r\n  display: flex;\r\n  flex-direction: column;\r\n  width: 40%;\r\n  margin: auto;\r\n  text-align: center;\r\n  font-size: 1.4rem;\r\n}\r\n.message {\r\n  margin: 2px;\r\n  padding: 3%;\r\n}\r\n.bounce-enter-active {\r\n  animation: bounce-in 0.5s;\r\n}\r\n.bounce-leave-active {\r\n  animation: bounce-in 0.5s reverse;\r\n}\r\n@keyframes bounce-in {\r\n  0% {\r\n    transform: scale(0);\r\n  }\r\n  50% {\r\n    transform: scale(1.5);\r\n  }\r\n  100% {\r\n    transform: scale(1);\r\n  }\r\n}\r\n</style>"],"sourceRoot":""}]);
 // Exports
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+module.exports = ___CSS_LOADER_EXPORT___;
 
 
 /***/ }),
@@ -20966,6 +20956,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Edit",
@@ -20985,58 +20986,72 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    send(e) {
-      let data = new FormData();
-      data.append("invite", this.formInfo.server.invite);
-      data.append("description", this.formInfo.server.description);
-      fetch(this.formInfo.rote, {
-        method: "POST",
-        body: data,
-      }).then((resp) => {
-        resp.text().then((code) => {
-          switch (code) {
-            case "0":
-              this.code.push({
-                class: "badge badge-danger",
-                message: "Erro ao salvar, tente novamente mais tarde",
-              });
-
-              break;
-            case "1":
-              this.code.push({
-                class: "badge badge-success",
-                message: "Edição efeituada com sucesso!",
-              });
-              break;
-            case "2":
-              this.code.push({
-                class: "badge badge-danger",
-                message: "Preencha todos os campos do formuário",
-              });
-              break;
-            case "3":
-              this.code.push({
-                class: "badge badge-danger",
-                message: "Sua descrição é muito grande",
-              });
-              break;
-            case "23":
-              this.code.push({
-                class: "badge badge-danger",
-                message: "Preencha todos os campos do formuário",
-              });
-              this.code.push({
-                class: "badge badge-danger",
-                message: "Sua descrição é muito grande",
-              });
-              break;
-          }
-
-          setTimeout(() => {
-            this.code.splice(0, this.code.length);
-          }, 5000);
-        });
+    sendAlert(type, msg) {
+      type = type == 0 ? "danger" : "success";
+      this.code.push({
+        id: new Date().getTime(),
+        class: "badge badge-" + type,
+        message: msg,
       });
+      setTimeout(() => {
+        this.code.splice(0, this.code.length);
+      }, 3000);
+    },
+    send() {
+      let canSend = true;
+      for (let camp in this.formInfo.server) {
+        if (this.formInfo.server[camp] == "") {
+          this.sendAlert(0, "Preencha todos os campos do formuário");
+          canSend = false;
+          break;
+        }
+      }
+      if (this.formInfo.server.description.length > 140) {
+        this.sendAlert(0, "Sua descrição é muito grande");
+        canSend = false;
+      }
+
+      if (canSend === true) {
+        let data = new FormData();
+        data.append("invite", this.formInfo.server.invite);
+        data.append("description", this.formInfo.server.description);
+        fetch(this.formInfo.rote, {
+          method: "POST",
+          body: data,
+        }).then((resp) => {
+          resp.text().then((code) => {
+            switch (code) {
+              case "0":
+                this.sendAlert(0, "Erro ao salvar, tente novamente mais tarde");
+                break;
+              case "1":
+                this.sendAlert(1, "Edição efeituada com sucesso!");
+                break;
+              case "2":
+                this.sendAlert(0, "Preencha todos os campos do formuário");
+                break;
+              case "3":
+                this.sendAlert(0, "Sua descrição é muito grande");
+                break;
+              case "23":
+                this.sendAlert(0, "Preencha todos os campos do formuário");
+                this.sendAlert(0, "Sua descrição é muito grande");
+                break;
+            }
+          });
+        });
+      }
+    },
+  },
+  computed: {
+    counter: function () {
+      return 140 - this.formInfo.server.description.length;
+    },
+    descTooLong: function () {
+      if (this.counter < 0) {
+        return true;
+      }
+      return false;
     },
   },
   created() {
@@ -21287,7 +21302,7 @@ __webpack_require__.r(__webpack_exports__);
   \*******************************************************************************************************/
 /*! namespace exports */
 /*! export default [provided] [no usage info] [missing usage info prevents renaming] */
-/*! other exports [maybe provided (runtime-defined)] [no usage info] -> ./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EditForm.vue?vue&type=style&index=0&id=64596f4e&scoped=true&lang=css& */
+/*! other exports [maybe provided (runtime-defined)] [no usage info] -> ./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-2[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EditForm.vue?vue&type=style&index=0&id=64596f4e&scoped=true&lang=css& */
 /*! runtime requirements: __webpack_require__, __webpack_require__.n, __webpack_exports__, __webpack_require__.d, __webpack_require__.r, __webpack_require__.* */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -21296,12 +21311,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ });
-/* harmony import */ var _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_EditForm_vue_vue_type_style_index_0_id_64596f4e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-style-loader/index.js!../../../node_modules/css-loader/dist/cjs.js!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./EditForm.vue?vue&type=style&index=0&id=64596f4e&scoped=true&lang=css& */ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EditForm.vue?vue&type=style&index=0&id=64596f4e&scoped=true&lang=css&");
-/* harmony import */ var _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_EditForm_vue_vue_type_style_index_0_id_64596f4e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_EditForm_vue_vue_type_style_index_0_id_64596f4e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_2_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_EditForm_vue_vue_type_style_index_0_id_64596f4e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-style-loader/index.js!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-2[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./EditForm.vue?vue&type=style&index=0&id=64596f4e&scoped=true&lang=css& */ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-2[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EditForm.vue?vue&type=style&index=0&id=64596f4e&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_2_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_EditForm_vue_vue_type_style_index_0_id_64596f4e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_2_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_EditForm_vue_vue_type_style_index_0_id_64596f4e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
 /* harmony reexport (unknown) */ var __WEBPACK_REEXPORT_OBJECT__ = {};
-/* harmony reexport (unknown) */ for(const __WEBPACK_IMPORT_KEY__ in _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_EditForm_vue_vue_type_style_index_0_id_64596f4e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== "default") __WEBPACK_REEXPORT_OBJECT__[__WEBPACK_IMPORT_KEY__] = () => _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_EditForm_vue_vue_type_style_index_0_id_64596f4e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[__WEBPACK_IMPORT_KEY__]
+/* harmony reexport (unknown) */ for(const __WEBPACK_IMPORT_KEY__ in _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_2_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_EditForm_vue_vue_type_style_index_0_id_64596f4e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== "default") __WEBPACK_REEXPORT_OBJECT__[__WEBPACK_IMPORT_KEY__] = () => _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_2_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_EditForm_vue_vue_type_style_index_0_id_64596f4e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[__WEBPACK_IMPORT_KEY__]
 /* harmony reexport (unknown) */ __webpack_require__.d(__webpack_exports__, __WEBPACK_REEXPORT_OBJECT__);
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((_node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_EditForm_vue_vue_type_style_index_0_id_64596f4e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default())); 
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((_node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_2_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_EditForm_vue_vue_type_style_index_0_id_64596f4e_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default())); 
 
 /***/ }),
 
@@ -21328,123 +21343,151 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "form-area" },
+    { staticClass: "content" },
     [
-      _vm._l(_vm.code, function(item) {
-        return _c("div", { key: item.message, class: item.class }, [
-          _c("h4", [_vm._v("\n      " + _vm._s(item.message) + "\n    ")])
-        ])
-      }),
-      _vm._v(" "),
-      _c("br"),
-      _vm._v(" "),
       _c(
-        "form",
-        {
-          attrs: { action: _vm.formInfo.rote, method: "post" },
-          on: {
-            submit: function($event) {
-              $event.preventDefault()
-              return _vm.send($event)
-            }
-          }
-        },
-        [
-          _c("div", { staticClass: "w-75 m-auto form-group row" }, [
-            _c(
-              "label",
-              {
-                staticClass: "col-sm-4 col-form-label",
-                attrs: { for: "invite" }
-              },
-              [
-                _vm._v(
-                  "\n        Convite para o servidor(Tem que ser permanente)\n      "
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-sm-8" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.formInfo.server.invite,
-                    expression: "formInfo.server.invite"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: {
-                  type: "text",
-                  id: "invite",
-                  name: "invite",
-                  placeholder: "https://discord.gg/abcdfgh"
-                },
-                domProps: { value: _vm.formInfo.server.invite },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.formInfo.server, "invite", $event.target.value)
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("input", {
-              attrs: { type: "hidden", name: "csrf", value: "{}" }
-            }),
-            _vm._v(" "),
-            _c(
-              "label",
-              {
-                staticClass: "col-sm-4 col-form-label",
-                attrs: { for: "description" }
-              },
-              [_vm._v("uma breve descrição sobre seu servidor")]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-sm-8" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.formInfo.server.description,
-                    expression: "formInfo.server.description"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: {
-                  type: "text",
-                  id: "description",
-                  name: "description",
-                  placeholder: "Um servidor amigável"
-                },
-                domProps: { value: _vm.formInfo.server.description },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(
-                      _vm.formInfo.server,
-                      "description",
-                      $event.target.value
-                    )
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _vm._m(0)
+        "transition-group",
+        { staticClass: "messages-block", attrs: { name: "bounce" } },
+        _vm._l(_vm.code, function(item) {
+          return _c("div", { key: item.id, class: "message " + item.class }, [
+            _c("span", [
+              _vm._v("\n        " + _vm._s(item.message) + "\n      ")
+            ])
           ])
-        ]
-      )
+        }),
+        0
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-area" }, [
+        _c(
+          "form",
+          {
+            attrs: { action: _vm.formInfo.rote, method: "post" },
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.send($event)
+              }
+            }
+          },
+          [
+            _c("div", { staticClass: "w-75 m-auto form-group row" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "col-sm-4 col-form-label",
+                  attrs: { for: "invite" }
+                },
+                [
+                  _vm._v(
+                    "\n          Convite para o servidor(Tem que ser permanente)\n        "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-sm-8" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.formInfo.server.invite,
+                      expression: "formInfo.server.invite"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    type: "text",
+                    id: "invite",
+                    name: "invite",
+                    placeholder: "https://discord.gg/abcdfgh"
+                  },
+                  domProps: { value: _vm.formInfo.server.invite },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(
+                        _vm.formInfo.server,
+                        "invite",
+                        $event.target.value
+                      )
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                attrs: { type: "hidden", name: "csrf", value: "{}" }
+              }),
+              _vm._v(" "),
+              _c(
+                "label",
+                {
+                  staticClass: "col-sm-4 col-form-label",
+                  attrs: { for: "description" }
+                },
+                [_vm._v("uma breve descrição sobre seu servidor")]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group col-sm-8" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.formInfo.server.description,
+                      expression: "formInfo.server.description"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    type: "text",
+                    id: "description",
+                    name: "description",
+                    placeholder: "Um servidor amigável"
+                  },
+                  domProps: { value: _vm.formInfo.server.description },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(
+                        _vm.formInfo.server,
+                        "description",
+                        $event.target.value
+                      )
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "input-group-prepend" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "input-group-text",
+                      class: { "text-danger": _vm.descTooLong }
+                    },
+                    [
+                      _vm._v(
+                        "\n              " +
+                          _vm._s(_vm.counter) +
+                          "\n            "
+                      )
+                    ]
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _vm._m(0)
+            ])
+          ]
+        )
+      ])
     ],
-    2
+    1
   )
 }
 var staticRenderFns = [
@@ -21498,10 +21541,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EditForm.vue?vue&type=style&index=0&id=64596f4e&scoped=true&lang=css&":
-/*!**********************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EditForm.vue?vue&type=style&index=0&id=64596f4e&scoped=true&lang=css& ***!
-  \**********************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-2[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EditForm.vue?vue&type=style&index=0&id=64596f4e&scoped=true&lang=css&":
+/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-2[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EditForm.vue?vue&type=style&index=0&id=64596f4e&scoped=true&lang=css& ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! unknown exports (runtime-defined) */
 /*! runtime requirements: module, __webpack_require__, module.id */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
@@ -21509,12 +21552,12 @@ render._withStripped = true
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./EditForm.vue?vue&type=style&index=0&id=64596f4e&scoped=true&lang=css& */ "./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EditForm.vue?vue&type=style&index=0&id=64596f4e&scoped=true&lang=css&");
+var content = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-2[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./EditForm.vue?vue&type=style&index=0&id=64596f4e&scoped=true&lang=css& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-2[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EditForm.vue?vue&type=style&index=0&id=64596f4e&scoped=true&lang=css&");
 if(typeof content === 'string') content = [[module.id, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
 var add = __webpack_require__(/*! !../../../node_modules/vue-style-loader/lib/addStylesClient.js */ "./node_modules/vue-style-loader/lib/addStylesClient.js").default
-var update = add("76ad29db", content, false, {});
+var update = add("166bb530", content, false, {});
 // Hot Module Replacement
 if(false) {}
 

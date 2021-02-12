@@ -1,4 +1,4 @@
-<?php $v->layout('_theme'); ?>
+<?php $v->layout('_theme');?>
 
 <Edit content='<?= json_encode([
     "server" => $server->data,
