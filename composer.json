@@ -1,8 +1,8 @@
 {
   "name": "jovem_blood/server-list",
   "description": "a vote-based discord sever list",
-  "minimum-stability": "stable",
-  "license": "proprietary",
+  "minimum-stability": "dev",
+  "license": "MIT",
   "authors": [
     {
       "name": "Thiago conceição Peixoto",

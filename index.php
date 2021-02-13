@@ -41,7 +41,6 @@ $router->post('/{serverId}', "Web:form");
 $router->group('api');
 $router->post('/test', "Api:test");
 
-//:TODO criar uma rota para onde o formulário das configurações enviar os campos preenchidos
 /*
  * Errors and Dispatch
  */

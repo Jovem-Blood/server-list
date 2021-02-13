@@ -1,7 +1,7 @@
 {
   "name": "server-list",
   "version": "1.0.0",
-  "description": "",
+  "description": "a vote-based discord sever list",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -13,7 +13,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Jovem-Blood/server-list/issues"
   },
