@@ -163,7 +163,6 @@ class Web
             echo "você precisa estar no servidor e ser um ADM";
         } else {
 
-            //if($guilds[(array_search($urlId, $guilds))]->permissions == '2147483647')
             $key = array_search($urlId, $guilds);
 
             if ($guilds[$key]->permissions == '2147483647') {
@@ -210,23 +209,6 @@ class Web
             }
             die();
         }
-        /*
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://discordapp.com/api/invites/'. $invite);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $response = curl_exec($ch);
-        if(curl_errno($ch))
-        {
-            echo 'Curl error: ' . curl_error($ch);
-        }
-        vd($response);
-        curl_close($ch);
-        if(@$response->code == 10006) {
-            echo 'Convite inválido';
-        } else {
-            echo 'passou';
-        }
-        */
 
         $result = $this->servers->configServer(
             $data['serverId'],
@@ -262,6 +244,12 @@ class Web
         $server = $this->servers->findServer($urlId)[0];
 
         $result = $this->times->findTime($this->session->user->id, $urlId);
+        $pageContent = [
+            'title' => 'Server-list |' . $server->name,
+            'canVote' => true,
+            'serverName' => $server->name,
+            'votes' => ++$server->votes
+        ];
         if ($result) {
             //$userTime = new \DateTime('2020-10-05T04:05:18.134-03:00');
             $userTime = new \DateTime($result->time);
@@ -269,11 +257,8 @@ class Web
                 $this->servers->addVote($urlId);
                 $newTime = $this->times->updateTime($result->id);
                 echo $this->view->render('vote-page', [
-                    'title' => 'Server-list |' . $server->name,
-                    'canVote' => true,
-                    'timer' => $newTime['time'],
-                    'serverName' => $server->name,
-                    'votes' => ++$server->votes
+                    ...$pageContent,
+                    'timer' => $newTime['time']
                 ]);
             } else {
                 echo $this->view->render('vote-page', [
@@ -296,11 +281,8 @@ class Web
             $this->times->createTime($content);
 
             echo $this->view->render('vote-page', [
-                'title' => 'Server-list |' . $server->name,
-                'canVote' => true,
-                'timer' => $content['time'],
-                'serverName' => $server->name,
-                'votes' => ++$server->votes
+                ...$pageContent,
+                'timer' => $content['time']
             ]);
         }
     }
