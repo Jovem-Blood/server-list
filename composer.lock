@@ -4,57 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fbd7738bb37aced6c28819179690f435",
+    "content-hash": "1dc2035531c9992992a7a855cda420bf",
     "packages": [
-        {
-            "name": "coffeecode/datalayer",
-            "version": "1.1.7",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/robsonvleite/datalayer.git",
-                "reference": "6a51fa227bba003be11519e7efa8338bc87460f5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/robsonvleite/datalayer/zipball/6a51fa227bba003be11519e7efa8338bc87460f5",
-                "reference": "6a51fa227bba003be11519e7efa8338bc87460f5",
-                "shasum": ""
-            },
-            "require": {
-                "ext-pdo": "*",
-                "php": "^7.2"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "CoffeeCode\\DataLayer\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Robson V. Leite",
-                    "email": "cursos@upinside.com.br",
-                    "role": "Developer"
-                }
-            ],
-            "description": "The data layer is a persistent abstraction component of your database that PDO",
-            "homepage": "http://www.upinside.com.br",
-            "keywords": [
-                "Coffeecode",
-                "crud",
-                "database",
-                "delete",
-                "destroy",
-                "pdo",
-                "save",
-                "upinside"
-            ],
-            "time": "2020-07-02T17:10:50+00:00"
-        },
         {
             "name": "coffeecode/router",
             "version": "1.0.7",
@@ -98,6 +49,10 @@
                 "routes",
                 "upinside"
             ],
+            "support": {
+                "issues": "https://github.com/robsonvleite/router/issues",
+                "source": "https://github.com/robsonvleite/router/tree/master"
+            },
             "time": "2019-09-30T16:29:47+00:00"
         },
         {
@@ -170,15 +125,83 @@
                 "templating",
                 "views"
             ],
+            "support": {
+                "issues": "https://github.com/thephpleague/plates/issues",
+                "source": "https://github.com/thephpleague/plates/tree/master"
+            },
             "time": "2018-01-31T07:20:23+00:00"
+        },
+        {
+            "name": "opis/database",
+            "version": "4.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/opis/database.git",
+                "reference": "729a48f250407ccdf5c8ec728041706105cb3b9f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/opis/database/zipball/729a48f250407ccdf5c8ec728041706105cb3b9f",
+                "reference": "729a48f250407ccdf5c8ec728041706105cb3b9f",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pdo": "*",
+                "php": "^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.5 || ^7.0",
+                "symfony/yaml": "^3.4"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Opis\\Database\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Marius Sarca",
+                    "email": "marius.sarca@gmail.com"
+                },
+                {
+                    "name": "Sorin Sarca",
+                    "email": "sarca_sorin@hotmail.com"
+                }
+            ],
+            "description": "A database abstraction layer over PDO, that provides a powerful and intuitive query builder, bundled with an easy to use schema builder",
+            "homepage": "https://opis.io/database",
+            "keywords": [
+                "Abstraction Layer",
+                "database",
+                "mysql",
+                "postgre",
+                "query",
+                "query builder",
+                "schema builder",
+                "sql",
+                "sqlite"
+            ],
+            "support": {
+                "issues": "https://github.com/opis/database/issues",
+                "source": "https://github.com/opis/database/tree/4.2.0"
+            },
+            "time": "2020-05-24T20:22:00+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": {
-        "league/plates": 15
-    },
+    "minimum-stability": "dev",
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
@@ -186,5 +209,5 @@
         "ext-curl": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.0.0"
 }
