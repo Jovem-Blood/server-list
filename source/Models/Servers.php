@@ -7,6 +7,16 @@ use Source\Models\Conect;
 class Servers extends Connect
 {
 
+    public function createServer($content): bool
+    {
+        $content = (array)$content;
+        $result =
+            $this->insert($content)
+            ->into('servers');
+
+        return $result;
+    }
+
     public function configServer(string $serverId, array $content): bool
     {
 
@@ -61,7 +71,7 @@ class Servers extends Connect
         return $result;
     }
 
-    public function publishes(int $limit = null): array
+    public function publishes(int $limit = null, array $colum = []): array
     {
         if ($limit) {
             $result =
@@ -69,14 +79,14 @@ class Servers extends Connect
                 ->where('published')->is(1)
                 ->orderBy('votes', 'desc')
                 ->limit($limit)
-                ->select()
+                ->select($colum)
                 ->all();
         } else {
             $result =
                 $this->from('servers')
                 ->where('published')->is(1)
                 ->orderBy('votes', 'desc')
-                ->select()
+                ->select($colum)
                 ->all();
         }
         return $result;

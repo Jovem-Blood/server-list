@@ -40,7 +40,8 @@ $router->post('/{serverId}', "Web:form");
  */
 $router->group('api');
 $router->post('/test', "Api:test");
-
+$router->post('/rank', "Api:rank");
+$router->post('/create', "Api:create");
 /*
  * Errors and Dispatch
  */
