@@ -1,53 +1,113 @@
 <?php
 
-
 namespace Source\Models;
-use CoffeeCode\DataLayer\DataLayer;
 
-class Servers extends DataLayer
+use Source\Models\Conect;
+
+class Servers extends Connect
 {
 
-    public function __construct()
+    public function createServer($content): bool
     {
-        parent::__construct("servers", [], "id", false);
+        $content = (array)$content;
+        $result =
+            $this->insert($content)
+            ->into('servers');
+
+        return $result;
     }
 
-    public function findServer(string $serverId): Servers
+    public function configServer(string $serverId, array $content): bool
     {
-        $server = $this->find('server_id = :sId', 'sId='.$serverId)->fetch();
-        return $server;
+
+        $result =
+            $this->update('servers')
+            ->where('server_id')->is($serverId)
+            ->set($content);
+
+        return $result;
     }
 
-    public function serversIds(): array
+    public function findServer(string $serverId): array
     {
-        $servers = $this->find()->fetch(true);
-        $ids = [];
-        foreach ($servers as $server) {
-            array_push($ids,$server->server_id);
+        $result =
+            $this->from('servers')
+            ->where('server_id')->is($serverId)
+            ->select()
+            ->all();
+
+        return $result;
+    }
+
+    public function findServers(object $guilds): array
+    {
+        $result = [];
+        foreach ($guilds as $guild) {
+            $sd =
+                $this->from('servers')
+                ->where('server_id')->is($guild->id)
+                ->select('server_id')
+                ->all();
+
+            $sd = $sd[0]->server_id ?? null;
+            $sd === null ?: array_push($result, $sd);
         }
-        return $ids;
+        return $result;
     }
 
-    public function publishes(int $limit = null):array
+    public function addVote(string $serverId): bool
     {
-       if($limit) {
-            $servers = $this->find('published = :p', ':p=1')->limit($limit)->order("votes DESC")->fetch(true);
+        $result =
+            $this->update('servers')
+            ->where('server_id')->is($serverId)
+            ->set(
+                array(
+                    'votes' => function ($expr) {
+                        $expr->column('votes')->{'+'}->value(1);
+                    },
+                    'updatedAt' => date('Y-m-d H:i:s')
+                )
+            );
+        return $result;
+    }
+
+    public function publishes(int $limit = null, array $colum = []): array
+    {
+        if ($limit) {
+            $result =
+                $this->from('servers')
+                ->where('published')->is(1)
+                ->orderBy('votes', 'desc')
+                ->limit($limit)
+                ->select($colum)
+                ->all();
         } else {
-            $servers = $this->find('published = :p', ':p=1')->order("votes DESC")->fetch(true);
+            $result =
+                $this->from('servers')
+                ->where('published')->is(1)
+                ->orderBy('votes', 'desc')
+                ->select($colum)
+                ->all();
         }
-        return $servers;
+        return $result;
     }
 
-    public function isPublished(string $serverId):bool
+    public function serverExists(string $serverId): bool
     {
-        $servers = $this->publishes();
-        $publishesId=[];
-        foreach ($servers as $server) {
-            array_push($publishesId, $server->server_id);
-        }
-        if(!in_array($serverId, $publishesId)){
+        if (empty($this->findServer($serverId))) {
             return false;
         }
         return true;
+    }
+
+    public function isPublished(string $serverId): bool
+    {
+        $result =
+            $this->from('servers')
+            ->where('server_id')->is($serverId)
+            ->select('published')
+            ->all();
+
+        return $result;
     }
 }

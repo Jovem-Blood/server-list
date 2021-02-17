@@ -3,22 +3,47 @@
 
 namespace Source\App;
 
-use CoffeeCode\Router\Router;
 use Source\Models\Servers;
 
 class Api
 {
     protected string $token = DISCORD_TOKEN;
-    public function test($data)
+    private $request;
+    private Servers $servers;
+    public function __construct()
     {
-        /*
-        :TODO criar as funções da api
-        $data = json_decode(file_get_contents("php://input"), true) ?? null;
-        if ($data['token'] === $this->token) {
-            $data = (object)$data;
-            echo json_encode($data);
+        $data = json_decode(file_get_contents("php://input"));
+        if (isset($data) && isset($data->token) && $data->token == $this->token) {
+            $this->request = $data;
+            $this->servers = new Servers();
         } else {
-            echo 'erro';
-        }*/
+            $this->request = null;
+        }
+    }
+
+    public function rank()
+    {
+        if ($this->request) {
+            $result = $this->servers->publishes(10, ['name', 'votes']);
+            echo json_encode($result);
+        }
+    }
+
+    public function create()
+    {
+        if ($this->request) {
+            $request = $this->request;
+            $result =
+                $this->servers->createServer((array)$request->data);
+
+            return json_encode($result);
+        }
+    }
+
+    public function test()
+    {
+        if ($this->request) {
+            echo $this->request->message->content;
+        }
     }
 }

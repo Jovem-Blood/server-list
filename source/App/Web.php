@@ -2,6 +2,7 @@
 
 namespace Source\App;
 
+
 use League\Plates\Engine;
 use Source\Models\Servers;
 use Source\Models\Tags;
@@ -14,38 +15,41 @@ class Web
     private Servers $servers;
     private User $user;
     private Session $session;
+    private Times $times;
+
     public function __construct()
     {
-
         $this->session = new Session();
         $this->user = new User();
         $this->servers = new Servers();
+        $this->times = new Times();
+
         $this->view = Engine::create(__DIR__ . "/../../themes", "php");
-        if($this->session->has('user')) {
+        if ($this->session->has('user')) {
             $this->view->addData(['user' => $this->user]);
         }
     }
 
     public function home()
-    {//$this->servers->find()->limit(6)->order("votes DESC")->fetch(true)
+    {
         echo $this->view->render("home", [
             'title' => 'Server-List',
             'servers' => $this->servers->publishes(6),
         ]);
-
     }
 
     public function profile()
     {
-        
-        if($this->session->has('user')){
+
+        if ($this->session->has('user')) {
+            $userGuilds = $this->session->guilds;
             echo $this->view->render("profile", [
                 'title' => 'Server-List | ' . $this->user->getName(),
-                'guilds' => $this->session->guilds,
-                'servers' => $this->servers->serversIds(),
+                'guilds' => $userGuilds,
+                'servers' => $this->servers->findServers($userGuilds),
                 'profile' => true
             ]);
-        }else {
+        } else {
             echo 'você não está logado ;-;';
         }
     }
@@ -61,7 +65,7 @@ class Web
 
             $params = array(
                 'client_id' => OAUTH2_CLIENT_ID,
-                'redirect_uri' => URL_BASE.'/login',
+                'redirect_uri' => URL_BASE . '/login',
                 'response_type' => 'code',
                 'scope' => 'identify guilds'
             );
@@ -79,7 +83,7 @@ class Web
                 "grant_type" => "authorization_code",
                 'client_id' => OAUTH2_CLIENT_ID,
                 'client_secret' => OAUTH2_CLIENT_SECRET,
-                'redirect_uri' => URL_BASE.'/login',
+                'redirect_uri' => URL_BASE . '/login',
                 'code' => get('code')
             ));
             $logout_token = $token->access_token;
@@ -96,13 +100,12 @@ class Web
             $this->session->set('user', $user);
             $this->session->set('guilds', $guilds);
 
-            header('Location: '. url());
+            header('Location: ' . url());
             die();
         } else {
-            header('Location: '. url('login?action=login'));
+            header('Location: ' . url('login?action=login'));
             die();
         }
-
     }
 
     public function logout()
@@ -114,7 +117,7 @@ class Web
     public function server($data)
     {
         $urlId = $data['serverId'];
-        if(!in_array($urlId, $this->servers->serversIds())) {
+        if (!$this->servers->serverExists($urlId)) {
             $this->error([
                 'errcode' => '404'
             ]);
@@ -124,10 +127,8 @@ class Web
         $time = new \DateTime();
         $time = $time->add(new \DateInterval('PT12H'));
 
-        $servers = new Servers();
-        if(in_array($urlId, $servers->serversIds())) {
-            $server = $servers->find('server_id = :sId','sId='.$urlId)->fetch();
-            echo $this->view->render('servers',[
+        if ($server = ($this->servers->findServer($urlId))[0]) {
+            echo $this->view->render('servers', [
                 'title' => 'Server-List | ' . $server->name,
                 'server' => $server,
                 'time' => $time->format('c'),
@@ -136,47 +137,49 @@ class Web
         } else {
             echo 'Servidor Não encontrado...';
         }
-
     }
 
     public function config($data)
     {
-        if(!in_array($data['serverId'], $this->servers->serversIds())) {
+        $urlId = $data['serverId'];
+        if (!$this->servers->serverExists($urlId)) {
             $this->error([
                 'errcode' => '404'
             ]);
             die();
         }
-        if(!isLoged($this->session)) {
+        if (!isLoged($this->session)) {
             header('Location: ' . url('login'));
             die();
         }
         $guilds = (array)$this->session->guilds;
         $guildsIds = [];
-        foreach($guilds as $guild) {
-            array_push($guildsIds , $guild->id);
+
+        foreach ($guilds as $guild) {
+            array_push($guildsIds, $guild->id);
         }
-        if(!in_array($data['serverId'], $guildsIds)) {
+
+        if (!in_array($urlId, $guildsIds)) {
             echo "você precisa estar no servidor e ser um ADM";
         } else {
-            //if($guilds[(array_search($data['serverId'], $guilds))]->permissions == '2147483647')
-            $key = array_search($data['serverId'], $guilds);
 
-            if($guilds[$key]->permissions == '2147483647') {
+            $key = array_search($urlId, $guilds);
+
+            if ($guilds[$key]->permissions == '2147483647') {
                 echo "você não é AMD";
             }
-        
-        echo $this->view->render('config', [
-            'title' => 'Server-list | Configurations',
-            'server' => $this->servers->find('server_id = :sId', 'sId='.$data['serverId'])->fetch()
-        ]);
+
+            echo $this->view->render('config', [
+                'title' => 'Server-list | Configurations',
+                'server' => $this->servers->findServer($urlId)[0]
+            ]);
         }
     }
 
     public function form($data)
     {
         header("Access-Control-Allow-Origin: *");
-        if($_REQUEST && !csrf_verify($_REQUEST)) {
+        if ($_REQUEST && !csrf_verify($_REQUEST)) {
             echo $this->view->render('config', [
                 'title' => 'Server-list | Configurations',
                 'server' => $this->servers->findServer($data['serverId']),
@@ -184,134 +187,118 @@ class Web
             ]);
             die();
         }
-        $data = filter_var_array($data,FILTER_DEFAULT);
+        $data = filter_var_array($data, FILTER_DEFAULT);
+        $errorMessage = [];
         $invite = $data['invite'];
         $description = $data['description'];
-        $errorMessage=[];
 
-        if(in_array('', $data)){
+        if (in_array('', $data)) {
             array_push($errorMessage, 2);
-            
         }
-
-        if(strlen($description)>140) {
+        if (strlen($description) > 140) {
             array_push($errorMessage, 3);
         }
 
-        if(strlen($invite) >7) {
+        if (strlen($invite) > 7) {
             $invite = substr($invite, 19);
         }
 
-        if($errorMessage) {
+        if ($errorMessage) {
             foreach ($errorMessage as $code) {
                 echo $code;
             }
             die();
         }
-//        /*
-//        $ch = curl_init();
-//        curl_setopt($ch, CURLOPT_URL, 'https://discordapp.com/api/invites/'. $invite);
-//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-//        $response = curl_exec($ch);
-//        if(curl_errno($ch))
-//        {
-//            echo 'Curl error: ' . curl_error($ch);
-//        }
-//        vd($response);
-//        curl_close($ch);
-//        if(@$response->code == 10006) {
-//            echo 'Convite inválido';
-//        } else {
-//            echo 'passou';
-//        }*/
-//
-        $server = (new Servers())->findServer($data['serverId']);
-        $server->description = $data['description'];
-        $server->invite = $data['invite'];
-        if($server->save()){
-            echo 1;
+
+        $result = $this->servers->configServer(
+            $data['serverId'],
+            [
+                'invite' => $invite,
+                'description' => $description,
+                'updatedAt' => date('Y-m-d H:i:s'),
+            ]
+        );
+
+        if ($result) {
+            echo $result;
         } else {
-            echo 0;
+            echo '0';
         }
-
-        die();
-
     }
 
     public function vote($data)
     {
-        if(!in_array($data['serverId'], $this->servers->serversIds())) {
+        $urlId = $data['serverId'];
+        if (!$this->servers->serverExists($urlId)) {
             $this->error([
                 'errcode' => '404'
             ]);
             die();
         }
-        if(!isLoged($this->session)) {
+        if (!isLoged($this->session)) {
             header('Location: ' . url('login'));
             die();
         }
 
-        $times = new Times();
-        $result = $times->getTime($this->session->user->id, $data['serverId']);
-        if($result) {
+        $dateNow = new \DateTime();
+        $server = $this->servers->findServer($urlId)[0];
+
+        $result = $this->times->findTime($this->session->user->id, $urlId);
+        $pageContent = [
+            'title' => 'Server-list |' . $server->name,
+            'canVote' => true,
+            'serverName' => $server->name,
+            'votes' => ++$server->votes
+        ];
+        if ($result) {
             //$userTime = new \DateTime('2020-10-05T04:05:18.134-03:00');
             $userTime = new \DateTime($result->time);
-            $now = new \DateTime();
-            $server = $this->servers->find('server_id = :sId','sId='.$data['serverId'])->fetch();
-            if($now >= $userTime) {
-                $server->votes +=1;
-                $server->save();
-                $newTime = (new Times())->findById($result->id);
-                $newTime->time = $now->add(new \DateInterval('PT12H'))->format('c');
-                $newTime->updatedAt = date('Y-m-d H:i:s');
-                $newTime->save();
+            if ($dateNow >= $userTime) {
+                $this->servers->addVote($urlId);
+                $newTime = $this->times->updateTime($result->id);
                 echo $this->view->render('vote-page', [
-                    'title' => 'Server-list |'. $server->name,
-                    'canVote' => true,
-                    'timer' => $newTime->time,
-                    'serverName' => $server->name,
-                    'votes' => $server->votes
+                    ...$pageContent,
+                    'timer' => $newTime['time']
                 ]);
             } else {
                 echo $this->view->render('vote-page', [
-                    'title' => 'Server-List |'. $server->name,
+                    'title' => 'Server-List |' . $server->name,
                     'canVote' => false,
                     'timer' => $userTime->format('c')
                 ]);
             }
         } else {
-            $now = new \DateTime();
-            $newTime = new Times();
-            $server = $this->servers->findById($data['serverId']);
-            $server->votes +=1;
-            $server->save();
+            $now = $dateNow->format('c');
+            $content = [
+                'user_id' => $this->session->user->id,
+                'server_id' => $urlId,
+                'time' => $dateNow->add(new \DateInterval('PT12H'))->format('c'),
+                'createdAt' => $now,
+                'updatedAt' => $now
+            ];
 
-            $newTime->user_id = $this->session->user->id;
-            $newTime->server_id = $data['serverId'];
-            $newTime->time = $now->add(new \DateInterval('PT12H'))->format('c');
-            $newTime->createdAt=date('Y-m-d H:i:s');
-            $newTime->updatedAt=date('Y-m-d H:i:s');
-            $newTime->save();
+            $this->servers->addVote($urlId);
+            $this->times->createTime($content);
 
-            vd($newTime);
-            vd($server);
+            echo $this->view->render('vote-page', [
+                ...$pageContent,
+                'timer' => $content['time']
+            ]);
         }
-
     }
 
     public function join($data)
     {
         $urlId = $data['serverId'];
-        $server = $this->servers->find("server_id = :sId", "sId=". $urlId)->fetch();
+        $server = $this->servers->findServer($urlId)[0];
         vd($server->invite);
     }
 
     public function error($data)
     {
         // :TODO create the errors page
-        if($data['errcode'] === '404') {
+        if ($data['errcode'] === '404') {
             echo 'página não encontrada :(';
         }
     }
-
 }
