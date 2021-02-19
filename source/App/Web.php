@@ -210,12 +210,11 @@ class Web
             die();
         }
 
-        $result = $this->servers->configServer(
+        $result = $this->servers->updateServer(
             $data['serverId'],
             [
                 'invite' => $invite,
                 'description' => $description,
-                'updatedAt' => date('Y-m-d H:i:s'),
             ]
         );
 

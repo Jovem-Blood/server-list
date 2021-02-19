@@ -17,13 +17,24 @@ class Servers extends Connect
         return $result;
     }
 
-    public function configServer(string $serverId, array $content): bool
+    public function updateServer(string $serverId, array $content): bool
     {
 
         $result =
             $this->update('servers')
             ->where('server_id')->is($serverId)
             ->set($content);
+
+        return $result;
+    }
+
+    public function deleteServer(string $serverId): bool
+    {
+
+        $result =
+            $this->from('servers')
+            ->where('server_id')->is($serverId)
+            ->delete();
 
         return $result;
     }

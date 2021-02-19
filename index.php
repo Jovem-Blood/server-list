@@ -42,6 +42,8 @@ $router->group('api');
 $router->post('/test', "Api:test");
 $router->post('/rank', "Api:rank");
 $router->post('/create', "Api:create");
+$router->post('/update', "Api:update");
+$router->post('/delete', "Api:delete");
 /*
  * Errors and Dispatch
  */

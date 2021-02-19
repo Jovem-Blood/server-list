@@ -5,6 +5,8 @@ namespace Source\App;
 
 use Source\Models\Servers;
 
+use function PHPSTORM_META\type;
+
 class Api
 {
     protected string $token = DISCORD_TOKEN;
@@ -21,14 +23,6 @@ class Api
         }
     }
 
-    public function rank()
-    {
-        if ($this->request) {
-            $result = $this->servers->publishes(10, ['name', 'votes']);
-            echo json_encode($result);
-        }
-    }
-
     public function create()
     {
         if ($this->request) {
@@ -36,7 +30,36 @@ class Api
             $result =
                 $this->servers->createServer((array)$request->data);
 
-            return json_encode($result);
+            echo json_encode($result);
+        }
+    }
+
+    public function update()
+    {
+        if ($this->request) {
+            $data = $this->request->data;
+            $serverId = $this->request->serverId;
+            $result =
+                $this->servers->updateServer($serverId, (array)$data);
+            echo json_encode($result);
+        }
+    }
+
+    public function delete()
+    {
+        if ($this->request) {
+            $serverId = $this->request->serverId;
+            $result =
+                $this->servers->deleteServer($serverId);
+            echo json_encode($result);
+        }
+    }
+
+    public function rank()
+    {
+        if ($this->request) {
+            $result = $this->servers->publishes(10, ['name', 'votes']);
+            echo json_encode($result);
         }
     }
 
