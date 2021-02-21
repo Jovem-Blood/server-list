@@ -12,10 +12,15 @@ Como eu tinha dito anteriormente, era pra ser algo simples, mas eu fiquei adicio
 # Explicando sobre as dependências
 Se você olhar o projeto verá que eu estou usando alguns componentes do [Packagist](https://packagist.org/), se você não sabe o que é considere ele como o npm do JavaScript ;), os componentes me ajudam com as rotas, com o banco de dados e a gerar o html (daria pra fazer isso sem componentes mas eu me acostumei a usá-los). Sobre JavaScript, além do vue e os seus respectivos loaders, eu também usei o webpack para fazer o trabalho de converter e minificar os arquivos .vue, para fazer isso você iria precisar configurar o webpack, é bem chato fazer isso na mão e faria mais sentido usar um framework como o Laravel ou Symfony, mas nessa altura eu não podia mais voltar e fazer usando o framework (fora que o desafio era fazer isso tudo sem usar nenhum framework) ¯\\\_(ツ)_/¯.
 
+# O bot
+O bot é uma parte essêncial para este site, já que vai ser por meio dele que o site conseguirá as informações dos servidores, assim que o bot for adicionado no servidor, ele enviará para o banco de dados a contagem de usuários, o número de emotes e o nome do servidor, com o servidor no banco, o usuário vai poder entrar em um formulário para colocar uma breve descrição do servidor, adicionar algumas tags e um convite (permanente) para que as pessoas que verem possam entrar no servidor. O bot também vai atualizar o banco de uma em uma hora mais informações [aqui](https://github.com/Jovem-Blood/jb2).
+
 # Avisos rápidos
 - Sobre a estrutura do site em si, eu não sou nenhum mestre do CSS então releve a feiura\falta de responsividade, então vou ficar devendo essa ;).
+
 - O backend é um monolito básico em MVC, ou seja, um request chama tal rota a rota chama um controlador e o controlador faz o que tem que fazer e gera um html.
+
 - Eu usei o Vue em lugares específicos como formulários e os timers.
+
 - O site ainda não está completo, falta bastante coisa na verdade.
-- O bot ainda está sendo feito também, tô fazendo tudo sozinho desculpe :v
 
