@@ -4,10 +4,7 @@ namespace Source\App;
 
 
 use League\Plates\Engine;
-use Source\Models\Servers;
-use Source\Models\Tags;
-use Source\Models\Times;
-
+use Source\Models\{Servers, Tags, Times};
 
 class Web
 {
@@ -54,9 +51,8 @@ class Web
         }
     }
 
-    public function login($data)
+    public function login()
     {
-        $authorizeURL = 'https://discord.com/api/oauth2/authorize';
         $tokenURL = 'https://discord.com/api/oauth2/token';
         $apiURLBase = 'https://discord.com/api/users/@me';
 
@@ -71,7 +67,7 @@ class Web
             );
 
             // Redirect the user to Discord's authorization page
-            header('Location: https://discordapp.com/api/oauth2/authorize' . '?' . http_build_query($params));
+            redirect('https://discordapp.com/api/oauth2/authorize' . '?' . http_build_query($params), false);
             die();
         }
 
@@ -87,23 +83,22 @@ class Web
                 'code' => get('code')
             ));
             $logout_token = $token->access_token;
-            $_SESSION['access_token'] = $token->access_token;
+            $this->session->set('access_token', $token->access_token);
 
-
-            header('Location: ' . $_SERVER['PHP_SELF']);
+            redirect();
         }
 
-        if (session('access_token')) {
+        if ($this->session->access_token) {
             $user = apiRequest($apiURLBase);
             $guilds = apiRequest('https://discord.com/api/users/@me/guilds');
 
             $this->session->set('user', $user);
             $this->session->set('guilds', $guilds);
 
-            header('Location: ' . url());
+            redirect();
             die();
         } else {
-            header('Location: ' . url('login?action=login'));
+            redirect('login?action=login');
             die();
         }
     }
@@ -148,7 +143,7 @@ class Web
             ]);
             die();
         }
-        if (!isLoged($this->session)) {
+        if (!isLoged()) {
             header('Location: ' . url('login'));
             die();
         }
@@ -178,13 +173,8 @@ class Web
 
     public function form($data)
     {
-        header("Access-Control-Allow-Origin: *");
-        if ($_REQUEST && !csrf_verify($_REQUEST)) {
-            echo $this->view->render('config', [
-                'title' => 'Server-list | Configurations',
-                'server' => $this->servers->findServer($data['serverId']),
-                'error' => 'O envio foi bloqueado por medidas de segurança, tente novamente',
-            ]);
+        if ($_REQUEST && !csrfVerify($_REQUEST)) {
+            echo "csrf inválido, use um formulário";
             die();
         }
         $data = filter_var_array($data, FILTER_DEFAULT);
@@ -234,7 +224,7 @@ class Web
             ]);
             die();
         }
-        if (!isLoged($this->session)) {
+        if (!isLoged()) {
             header('Location: ' . url('login'));
             die();
         }
@@ -290,7 +280,7 @@ class Web
     {
         $urlId = $data['serverId'];
         $server = $this->servers->findServer($urlId)[0];
-        vd($server->invite);
+        var_dump($server->invite);
     }
 
     public function error($data)

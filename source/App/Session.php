@@ -8,15 +8,15 @@ class Session
 {
     public function __construct()
     {
-        if(!session_id()) {
+        if (!session_id()) {
             session_save_path(SES_PATH);
             session_start();
         }
     }
 
-    public function __get($name)
+    public function __get(string $name)
     {
-        if(!empty($_SESSION[$name])) {
+        if (!empty($_SESSION[$name])) {
             return $_SESSION[$name];
         }
         return null;
@@ -42,7 +42,6 @@ class Session
     {
         unset($_SESSION[$key]);
         return $this;
-
     }
 
     public function has(string $key): bool
@@ -56,7 +55,7 @@ class Session
         return $this;
     }
 
-    public function destroy(): Session
+    public function destroy(): bool
     {
         return session_destroy();
     }

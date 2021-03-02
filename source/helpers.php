@@ -3,10 +3,12 @@
 use Source\App\Session;
 
 /**
- * @param string|null $url
+ * Retorna a url do projeto + caminho
+ *
+ * @param string $url
  * @return string
  */
-function url (string $url = null): string
+function url(string $url = null): string
 {
     if ($url) {
         return URL_BASE . "/$url";
@@ -14,58 +16,76 @@ function url (string $url = null): string
     return URL_BASE;
 }
 
-
-function redirect(string $url = null):void
+/**
+ * redireciona para um lugar do site ou fora dele
+ *
+ * @param string $url
+ * @param boolean $here caso precise redirecionar para fora do site $here será false
+ * @return void
+ */
+function redirect(string $url = null, bool $here = true): void
 {
-    if($url) {
-        header('Location: '. URL_BASE . "/$url");
+    if ($url) {
+        if ($here) {
+            header('Location: ' . URL_BASE . "/$url");
+            die();
+        }
+        header('Location: ' . "$url");
         die();
     }
-    header('Location: '. URL_BASE);
+    header('Location: ' . URL_BASE);
     die();
 }
 
 /**
+ * retorna o ícone de um usuário 
+ *
  * @param string $userId
  * @param $userIcon
  * @return string
  */
-function userIcon (string $userId, $userIcon): string
+function userIcon(string $userId, $userIcon): string
 {
 
-    return 'https://cdn.discordapp.com/avatars/' . $userId . '/'. $userIcon . '.webp';
-
+    return 'https://cdn.discordapp.com/avatars/' . $userId . '/' . $userIcon . '.webp';
 }
 
 /**
+ * retorna o ícone de um servidor
+ *
  * @param string $serverId
- * @param $serverIcon
+ * @param string $serverIcon
  * @return string
  */
-function serverIcon (string $serverId, $serverIcon):string {
-    return 'https://cdn.discordapp.com/icons/' . $serverId . '/'. $serverIcon . '.webp';
+function serverIcon(string $serverId, string $serverIcon): string
+{
+    return 'https://cdn.discordapp.com/icons/' . $serverId . '/' . $serverIcon . '.webp';
 }
 
 /**
- * @param string|null $id
- * @return string
+ * retorna o link para adicionar o bot em um servidor
+ *
+ * @param string $id
+ * @return void
  */
-function addBot(string $id=null) {
-    if($id) {
-        return 'https://discord.com/oauth2/authorize?client_id='. $id .'&permissions=387136&scope=bot';
-    }else {
+function addBot(string $id = null)
+{
+    if ($id) {
+        return 'https://discord.com/oauth2/authorize?client_id=' . $id . '&permissions=387136&scope=bot';
+    } else {
         return 'https://discord.com/oauth2/authorize?client_id=537799173744099328&permissions=387136&scope=bot';
     }
 }
 
-
 /**
- * @param $url
- * @param bool $post
+ * faz um request para uma api e retorna um objeto
+ *
+ * @param string $url
+ * @param boolean $post
  * @param array $headers
- * @return mixed
+ * @return array|object
  */
-function apiRequest($url, $post = FALSE, $headers = array())
+function apiRequest(string $url, $post = FALSE, array $headers = array())
 {
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
@@ -74,13 +94,15 @@ function apiRequest($url, $post = FALSE, $headers = array())
     $response = curl_exec($ch);
 
 
-    if ($post)
+    if ($post) {
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
+    }
 
     $headers[] = 'Accept: application/json';
 
-    if (session('access_token'))
-        $headers[] = 'Authorization: Bearer ' . session('access_token');
+    if ($access_token = (new Session)->access_token) {
+        $headers[] = 'Authorization: Bearer ' . $access_token;
+    }
 
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
@@ -89,70 +111,56 @@ function apiRequest($url, $post = FALSE, $headers = array())
 }
 
 /**
- * @param $key
- * @param null $default
- * @return mixed|null
+ * retorna um valor da global $_GET
+ *
+ * @param string $key
+ * @param mixed|null $default
+ * @return mixed
  */
-function get($key, $default = NULL)
+function get(string $key, $default = NULL)
 {
     return array_key_exists($key, $_GET) ? $_GET[$key] : $default;
 }
 
-/**
- * @param $key
- * @param null $default
- * @return mixed|null
- */
-function session($key, $default = NULL)
-{
-    return array_key_exists($key, $_SESSION) ? $_SESSION[$key] : $default;
-}
-
 
 /**
- * @param object $session
- * @return bool
+ * Checa se o usuário está logado ou não
+ *
+ * @param Session $session
+ * @return boolean
  */
-function isLoged(object $session): bool
+function isLoged(): bool
 {
-    if(!$session->has('user')) {
+    if (!(new Session)->has('user')) {
         return false;
     }
     return true;
 }
 
 /**
+ * substitue/gera um token CSRF
+ *
  * @return string
  */
-function csrf_input(): string
+
+function csrfGenerate(): string
 {
     $csrf = (new Session());
     $csrf->csrf();
-    return '<input type="hidden" name="csrf" value="'.($csrf->csrf_token ?? "" ).'"/>';
+    return ($csrf->csrf_token ?? "");
 }
 
 /**
- * @param $request
- * @return bool
+ * verifica se o csrf do request token é válido
+ *
+ * @param $_REQUEST $request
+ * @return boolean
  */
-function csrf_verify($request): bool
+function csrfVerify($request): bool
 {
-    if(empty((new Session())->csrf_token) || empty($request['csrf']) || $request['csrf'] != (new Session())->csrf_token) {
-        return true;
+    $session = new Session();
+    if (empty($session->csrf_token) || empty($request['csrf']) || $request['csrf'] != $session->csrf_token) {
+        return false;
     }
     return true;
-}
-
-/*
- * for Debug
- * */
-
-/**
- * @param $var
- */
-function vd($var)
-{
-    echo "<pre>";
-    var_dump($var);
-    echo "</pre>";
 }

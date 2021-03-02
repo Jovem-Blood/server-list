@@ -23,7 +23,7 @@
               placeholder="https://discord.gg/abcdfgh"
             />
           </div>
-          <input type="hidden" name="csrf" value="{}" />
+          <input type="hidden" name="csrf" :value="formInfo.csrf" />
           <label class="col-sm-4 col-form-label" for="description"
             >uma breve descrição sobre seu servidor</label
           >
@@ -68,6 +68,7 @@ export default {
           description: "",
         },
         rote: "",
+        csrf: "",
       },
       code: [],
     };
@@ -102,6 +103,7 @@ export default {
         let data = new FormData();
         data.append("invite", this.formInfo.server.invite);
         data.append("description", this.formInfo.server.description);
+        data.append("csrf", this.formInfo.csrf);
         fetch(this.formInfo.rote, {
           method: "POST",
           body: data,
@@ -123,6 +125,9 @@ export default {
               case "23":
                 this.sendAlert(0, "Preencha todos os campos do formuário");
                 this.sendAlert(0, "Sua descrição é muito grande");
+                break;
+              default:
+                this.sendAlert(0, code);
                 break;
             }
           });
