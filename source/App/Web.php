@@ -43,7 +43,7 @@ class Web
             echo $this->view->render("profile", [
                 'title' => 'Server-List | ' . $this->user->getName(),
                 'guilds' => $userGuilds,
-                'servers' => $this->servers->findServers($userGuilds),
+                'databaseServersIds' => $this->servers->getServersIds($userGuilds),
                 'profile' => true
             ]);
         } else {

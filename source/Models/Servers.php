@@ -39,31 +39,32 @@ class Servers extends Connect
         return $result;
     }
 
-    public function findServer(string $serverId): array
+    public function findServer(string $serverId, array $columns = []): array
     {
         $result =
             $this->from('servers')
             ->where('server_id')->is($serverId)
-            ->select()
+            ->select($columns)
             ->all();
 
         return $result;
     }
 
-    public function findServers(object $guilds): array
+    public function getServersIds(object $guilds): array
     {
-        $result = [];
+        $results = [];
         foreach ($guilds as $guild) {
-            $sd =
+            $result =
                 $this->from('servers')
                 ->where('server_id')->is($guild->id)
                 ->select('server_id')
                 ->all();
 
-            $sd = $sd[0]->server_id ?? null;
-            $sd === null ?: array_push($result, $sd);
+            if ($result) {
+                array_push($results, $result[0]->server_id);
+            }
         }
-        return $result;
+        return $results;
     }
 
     public function addVote(string $serverId): bool
@@ -105,7 +106,7 @@ class Servers extends Connect
 
     public function serverExists(string $serverId): bool
     {
-        if (empty($this->findServer($serverId))) {
+        if (empty($this->findServer($serverId, ['id']))) {
             return false;
         }
         return true;
