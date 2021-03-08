@@ -85,7 +85,7 @@ class Web
             $logout_token = $token->access_token;
             $this->session->set('access_token', $token->access_token);
 
-            redirect();
+            redirect($_SERVER['PHP_SELF']);
         }
 
         if ($this->session->access_token) {
@@ -244,11 +244,8 @@ class Web
             $userTime = new \DateTime($result->time);
             if ($dateNow >= $userTime) {
                 $this->servers->addVote($urlId);
-                $newTime = $this->times->updateTime($result->id);
-                echo $this->view->render('vote-page', [
-                    ...$pageContent,
-                    'timer' => $newTime['time']
-                ]);
+                $pageContent['timer'] = $this->times->updateTime($result->id);
+                echo $this->view->render('vote-page', $pageContent);
             } else {
                 echo $this->view->render('vote-page', [
                     'title' => 'Server-List |' . $server->name,
@@ -269,10 +266,8 @@ class Web
             $this->servers->addVote($urlId);
             $this->times->createTime($content);
 
-            echo $this->view->render('vote-page', [
-                ...$pageContent,
-                'timer' => $content['time']
-            ]);
+            $pageContent['timer'] = $content['time'];
+            echo $this->view->render('vote-page', $pageContent);
         }
     }
 
