@@ -87,28 +87,30 @@ export default {
     },
     send() {
       let canSend = true;
-      for (let camp in this.formInfo.server) {
-        if (this.formInfo.server[camp] == "") {
-          this.sendAlert(0, "Preencha todos os campos do formuário");
-          canSend = false;
-          break;
-        }
+      let description = this.formInfo.server.description
+      let invite = this.formInfo.server.invite
+
+      if (description == "" || invite == "") {
+        this.sendAlert(0, "Preencha todos os campos do formuário");
+        canSend = false;
       }
-      if (this.formInfo.server.description.length > 140) {
+
+      if (description.length > 140) {
         this.sendAlert(0, "Sua descrição é muito grande");
         canSend = false;
       }
 
       if (canSend === true) {
         let data = new FormData();
-        data.append("invite", this.formInfo.server.invite);
-        data.append("description", this.formInfo.server.description);
+        data.append("invite", invite);
+        data.append("description", description);
         data.append("csrf", this.formInfo.csrf);
         fetch(this.formInfo.rote, {
           method: "POST",
           body: data,
         }).then((resp) => {
           resp.text().then((code) => {
+            console.log(code);
             switch (code) {
               case "0":
                 this.sendAlert(0, "Erro ao salvar, tente novamente mais tarde");

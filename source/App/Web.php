@@ -216,6 +216,7 @@ class Web
             [
                 'invite' => $invite,
                 'description' => $description,
+                'published' => 1
             ]
         );
 
