@@ -31,7 +31,7 @@ class Web
     {
         echo $this->view->render("home", [
             'title' => 'Server-List',
-            'servers' => $this->servers->publishes(6),
+            'servers' => $this->servers->publishes(),
         ]);
     }
 
@@ -40,10 +40,21 @@ class Web
 
         if ($this->session->has('user')) {
             $userGuilds = $this->session->guilds;
+            $guilds = [];
+
+            foreach ($userGuilds as $guild) {
+                if ($guild->permissions == '2147483647') {
+                    $guild->exists = false;
+                    if ($this->servers->serverExists($guild->id)) {
+                        $guild->exists = true;
+                    }
+                    array_push($guilds, $guild);
+                }
+            }
+
             echo $this->view->render("profile", [
                 'title' => 'Server-List | ' . $this->user->getName(),
-                'guilds' => $userGuilds,
-                'databaseServersIds' => $this->servers->getServersIds($userGuilds),
+                'guilds' => $guilds,
                 'profile' => true
             ]);
         } else {
@@ -122,7 +133,7 @@ class Web
         $time = new \DateTime();
         $time = $time->add(new \DateInterval('PT12H'));
 
-        if ($server = ($this->servers->findServer($urlId))[0]) {
+        if ($server = ($this->servers->findServer($urlId))) {
             echo $this->view->render('servers', [
                 'title' => 'Server-List | ' . $server->name,
                 'server' => $server,
@@ -166,7 +177,7 @@ class Web
 
             echo $this->view->render('config', [
                 'title' => 'Server-list | Configurations',
-                'server' => $this->servers->findServer($urlId)[0]
+                'server' => $this->servers->findServer($urlId)
             ]);
         }
     }
@@ -230,11 +241,11 @@ class Web
         }
 
         $dateNow = new \DateTime();
-        $server = $this->servers->findServer($urlId)[0];
+        $server = $this->servers->findServer($urlId, ['name', 'votes']);
 
         $result = $this->times->findTime($this->session->user->id, $urlId);
         $pageContent = [
-            'title' => 'Server-list |' . $server->name,
+            'title' => 'Server-list | ' . $server->name,
             'canVote' => true,
             'serverName' => $server->name,
             'votes' => ++$server->votes
@@ -248,7 +259,7 @@ class Web
                 echo $this->view->render('vote-page', $pageContent);
             } else {
                 echo $this->view->render('vote-page', [
-                    'title' => 'Server-List |' . $server->name,
+                    'title' => 'Server-List | ' . $server->name,
                     'canVote' => false,
                     'timer' => $userTime->format('c')
                 ]);
@@ -274,7 +285,7 @@ class Web
     public function join($data)
     {
         $urlId = $data['serverId'];
-        $server = $this->servers->findServer($urlId)[0];
+        $server = $this->servers->findServer($urlId);
         var_dump($server->invite);
     }
 

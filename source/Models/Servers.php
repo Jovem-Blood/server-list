@@ -50,22 +50,12 @@ class Servers extends Connect
         return $result;
     }
 
-    public function getServersIds(object $guilds): array
-    {
-        $results = [];
-        foreach ($guilds as $guild) {
-            $result =
-                $this->from('servers')
-                ->where('server_id')->is($guild->id)
-                ->select('server_id')
-                ->all();
-
-            if ($result) {
-                array_push($results, $result[0]->server_id);
-            }
-        }
-        return $results;
-    }
+    /**
+     * Adiciona +1 na contagem de votos de um servidor
+     *
+     * @param string $serverId
+     * @return boolean
+     */
 
     public function addVote(string $serverId): bool
     {
