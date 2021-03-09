@@ -8,7 +8,7 @@ use Source\Models\Conect;
 class Tags extends Connect
 {
 
-    public function getTags(string $serverId): array
+    public function getServerTags(string $serverId): array
     {
         $result =
             $this->from(['servers' => 's'])
@@ -22,6 +22,15 @@ class Tags extends Connect
             ->select('t.name')
             ->all();
 
+        return $result;
+    }
+
+    public function getAllTags(): array
+    {
+        $result =
+            $this->from('tags')
+            ->select('name')
+            ->all();
         return $result;
     }
 }

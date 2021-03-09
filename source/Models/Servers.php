@@ -3,6 +3,7 @@
 namespace Source\Models;
 
 use Source\Models\Conect;
+use Source\Models\Tags;
 
 class Servers extends Connect
 {
@@ -77,6 +78,7 @@ class Servers extends Connect
             ->where('server_id')->is($serverId)
             ->select($columns)
             ->first();
+        $result->tags = (new Tags)->getServerTags($serverId);
 
         return $result;
     }

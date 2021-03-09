@@ -13,6 +13,7 @@ class Web
     private User $user;
     private Session $session;
     private Times $times;
+    private Tags $tags;
 
     public function __construct()
     {
@@ -20,6 +21,7 @@ class Web
         $this->user = new User();
         $this->servers = new Servers();
         $this->times = new Times();
+        $this->tags = new Tags();
 
         $this->view = Engine::create(__DIR__ . "/../../themes", "php");
         if ($this->session->has('user')) {
@@ -108,7 +110,7 @@ class Web
             redirect();
         } else {
             $this->error([
-                'errorcode' => '404'
+                'errcode' => '404'
             ]);
             die();
         }
@@ -138,7 +140,7 @@ class Web
                 'title' => 'Server-List | ' . $server->name,
                 'server' => $server,
                 'time' => $time->format('c'),
-                'tags' => (new Tags())->getTags($server->server_id)
+                'tags' => $this->tags->getServerTags($server->server_id)
             ]);
         } else {
             echo 'Servidor Não encontrado...';
@@ -177,7 +179,8 @@ class Web
 
             echo $this->view->render('config', [
                 'title' => 'Server-list | Configurations',
-                'server' => $this->servers->findServer($urlId)
+                'server' => $this->servers->findServer($urlId),
+                'allTags' => $this->tags->getAllTags()
             ]);
         }
     }

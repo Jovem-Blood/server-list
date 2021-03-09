@@ -66,7 +66,9 @@ export default {
         server: {
           invite: "",
           description: "",
+          tags: [],
         },
+        allTags: [],
         rote: "",
         csrf: "",
       },
@@ -87,8 +89,8 @@ export default {
     },
     send() {
       let canSend = true;
-      let description = this.formInfo.server.description
-      let invite = this.formInfo.server.invite
+      let description = this.formInfo.server.description;
+      let invite = this.formInfo.server.invite;
 
       if (description == "" || invite == "") {
         this.sendAlert(0, "Preencha todos os campos do formuário");
@@ -110,7 +112,6 @@ export default {
           body: data,
         }).then((resp) => {
           resp.text().then((code) => {
-            console.log(code);
             switch (code) {
               case "0":
                 this.sendAlert(0, "Erro ao salvar, tente novamente mais tarde");
