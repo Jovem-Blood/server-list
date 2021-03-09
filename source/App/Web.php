@@ -79,7 +79,6 @@ class Web
 
             // Redirect the user to Discord's authorization page
             redirect('https://discordapp.com/api/oauth2/authorize' . '?' . http_build_query($params), false);
-            die();
         }
 
         // When Discord redirects the user back here, there will be a "code" and "state" parameter in the query string
@@ -96,7 +95,7 @@ class Web
             $logout_token = $token->access_token;
             $this->session->set('access_token', $token->access_token);
 
-            redirect($_SERVER['PHP_SELF']);
+            redirect('login?action=login');
         }
 
         if ($this->session->access_token) {
@@ -107,9 +106,10 @@ class Web
             $this->session->set('guilds', $guilds);
 
             redirect();
-            die();
         } else {
-            redirect('login?action=login');
+            $this->error([
+                'errorcode' => '404'
+            ]);
             die();
         }
     }
@@ -117,7 +117,7 @@ class Web
     public function logout()
     {
         $this->session->destroy();
-        header('Location: ' . URL_BASE);
+        redirect();
     }
 
     public function server($data)
@@ -236,8 +236,7 @@ class Web
             die();
         }
         if (!isLoged()) {
-            header('Location: ' . url('login'));
-            die();
+            redirect('login');
         }
 
         $dateNow = new \DateTime();
