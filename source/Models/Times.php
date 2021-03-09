@@ -4,8 +4,7 @@
 namespace Source\Models;
 
 use Source\Models\Connect;
-use DateTime;
-use DateInterval;
+use DateTime, DateInterval;
 
 class Times extends Connect
 {
@@ -16,21 +15,7 @@ class Times extends Connect
             ->where('user_id')->is($userId)
             ->andWhere('server_id')->is($serverId)
             ->select()
-            ->all();
-
-        if ($result) {
-            return $result[0];
-        }
-        return $result;
-    }
-
-    public function findById(string $timeId)
-    {
-        $result =
-            $this->from('times')
-            ->where('id')->is($timeId)
-            ->select()
-            ->all();
+            ->first();
 
         return $result;
     }
@@ -47,19 +32,18 @@ class Times extends Connect
     public function updateTime(string $timeId): array
     {
         $dateNow = new DateTime();
-        $updateTime = [
-            'time' => $dateNow->add(new DateInterval('PT12H'))->format('c'),
-            'updatedAt' => date('Y-m-d H:i:s')
-        ];
+        $updatedTime = $dateNow->add(new DateInterval('PT12H'))->format('c');
 
         $done =
             $this->update('times')
             ->where('id')->is($timeId)
-            ->set($updateTime);
+            ->set([
+                'time' => $updatedTime
+            ]);
 
         $result = [
             'done' => $done,
-            'time' => $updateTime['time']
+            'time' => $updatedTime
         ];
 
         return $result;
