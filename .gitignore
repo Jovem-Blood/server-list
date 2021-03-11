@@ -1,3 +1,5 @@
 node_modules
 vendor
 source/config.php
+themes/dist/main.js
+themes/dist/main.js.map
