@@ -66,54 +66,50 @@ class Web
 
     public function login()
     {
-        $tokenURL = 'https://discord.com/api/oauth2/token';
-        $apiURLBase = 'https://discord.com/api/users/@me';
 
-        // Start the login process by sending the user to Discord's authorization page
         if (get('action') == 'login') {
 
-            $params = array(
+            $authorizeUrl = 'https://discordapp.com/api/oauth2/authorize?';
+
+            $params = [
                 'client_id' => OAUTH2_CLIENT_ID,
                 'redirect_uri' => URL_BASE . '/login',
                 'response_type' => 'code',
                 'scope' => 'identify guilds'
-            );
+            ];
 
-            // Redirect the user to Discord's authorization page
-            redirect('https://discordapp.com/api/oauth2/authorize' . '?' . http_build_query($params), false);
+            redirect($authorizeUrl . http_build_query($params), false);
         }
 
-        // When Discord redirects the user back here, there will be a "code" and "state" parameter in the query string
+
         if (get('code')) {
 
-            // Exchange the auth code for a token
-            $token = apiRequest($tokenURL, array(
+            $tokenURL = 'https://discord.com/api/oauth2/token';
+
+            $token = apiRequest($tokenURL, [
                 "grant_type" => "authorization_code",
                 'client_id' => OAUTH2_CLIENT_ID,
                 'client_secret' => OAUTH2_CLIENT_SECRET,
                 'redirect_uri' => URL_BASE . '/login',
                 'code' => get('code')
-            ));
-            $logout_token = $token->access_token;
-            $this->session->set('access_token', $token->access_token);
-
-            redirect('login?action=login');
-        }
-
-        if ($this->session->access_token) {
-            $user = apiRequest($apiURLBase);
-            $guilds = apiRequest('https://discord.com/api/users/@me/guilds');
-
-            $this->session->set('user', $user);
-            $this->session->set('guilds', $guilds);
-
-            redirect();
-        } else {
-            $this->error([
-                'errcode' => '404'
             ]);
-            die();
+
+            if ($token->access_token) {
+                $this->session->set('access_token', $token->access_token);
+
+                $apiURLBase = 'https://discord.com/api/users/@me';
+
+                $user = apiRequest($apiURLBase);
+                $guilds = apiRequest('https://discord.com/api/users/@me/guilds');
+
+                $this->session->set('user', $user);
+                $this->session->set('guilds', $guilds);
+
+                redirect();
+            }
         }
+
+        redirect('login?action=login');
     }
 
     public function logout()
