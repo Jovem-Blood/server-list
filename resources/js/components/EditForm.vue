@@ -23,10 +23,10 @@
               placeholder="https://discord.gg/abcdfgh"
             />
           </div>
-          <input type="hidden" name="csrf" :value="formInfo.csrf" />
-          <label class="col-sm-4 col-form-label" for="description"
-            >uma breve descrição sobre seu servidor</label
-          >
+
+          <label class="col-sm-4 col-form-label" for="description">
+            uma breve descrição sobre seu servidor
+          </label>
           <div class="input-group col-sm-8">
             <input
               class="form-control"
@@ -44,6 +44,10 @@
                 {{ counter }}
               </div>
             </div>
+          </div>
+
+          <div class="input-group col-sm-8">
+            <label for="tags">Tags</label>
           </div>
           <div class="col-sm m-3">
             <input class="btn btn-primary" type="submit" value="Editar" />
@@ -112,6 +116,7 @@ export default {
           body: data,
         }).then((resp) => {
           resp.text().then((code) => {
+            //:TODO remover esse switch
             switch (code) {
               case "0":
                 this.sendAlert(0, "Erro ao salvar, tente novamente mais tarde");
