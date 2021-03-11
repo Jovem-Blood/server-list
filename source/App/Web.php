@@ -128,19 +128,11 @@ class Web
             die();
         }
 
-        $time = new \DateTime();
-        $time = $time->add(new \DateInterval('PT12H'));
-
-        if ($server = ($this->servers->findServer($urlId))) {
-            echo $this->view->render('servers', [
-                'title' => 'Server-List | ' . $server->name,
-                'server' => $server,
-                'time' => $time->format('c'),
-                'tags' => $this->tags->getServerTags($server->server_id)
-            ]);
-        } else {
-            echo 'Servidor Não encontrado...';
-        }
+        $server = $this->servers->findServer($urlId, [], true);
+        echo $this->view->render('servers', [
+            'title' => 'Server-List | ' . $server->name,
+            'server' => $server
+        ]);
     }
 
     public function config($data)
@@ -175,7 +167,7 @@ class Web
 
             echo $this->view->render('config', [
                 'title' => 'Server-list | Configurations',
-                'server' => $this->servers->findServer($urlId),
+                'server' => $this->servers->findServer($urlId, [], true),
                 'allTags' => $this->tags->getAllTags()
             ]);
         }

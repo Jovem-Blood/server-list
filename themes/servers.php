@@ -20,7 +20,6 @@ $v->start('styles') ?>
 
 <h1 class="server-name"><?= $server->name ?></h1>
 <div class="container">
-    <Timer description="Tempo Restante" enter-time="2020-10-19T16:37:30-03:00"></Timer>
     <div class="btn-group" role="group" aria-label="Basic example">
         <a href="<?= url('servers/' . $server->server_id . '/vote') ?>">
             <button type="button" class="btn btn-success">Votar</button>
@@ -33,9 +32,9 @@ $v->start('styles') ?>
         <div class="image">
             <img src="<?= $server->icon == '' ? url('themes/dist/images/noicon.png') : $server->icon . '?size=512' ?>" alt="server icon" width="260" class="shadow">
         </div>
-        <?php if (!empty($tags)) : ?>
+        <?php if (!empty($server->tags)) : ?>
             <div class="d-flex">
-                <?php foreach ($tags as $tag) : ?>
+                <?php foreach ($server->tags as $tag) : ?>
                     <a href="#">
                         <div class="badge badge-primary"><?= $tag->name ?></div>
                     </a>
