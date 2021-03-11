@@ -68,18 +68,22 @@ class Servers extends Connect
      *
      * @param string $serverId
      * @param array $columns Caso seja necessário buscar colunas expecíficas
+     * @param bool $fetchTags Caso seja true, trará as tags do servidor
      * @return object|bool
      */
 
-    public function findServer(string $serverId, array $columns = [])
+    public function findServer(string $serverId, array $columns = [], bool $fetchTags = false)
     {
         $result =
             $this->from('servers')
             ->where('server_id')->is($serverId)
             ->select($columns)
             ->first();
-        $result->tags = (new Tags)->getServerTags($serverId);
 
+        if ($fetchTags == true && $result == true) {
+            $result->tags = (new Tags)->getServerTags($serverId);
+            return $result;
+        }
         return $result;
     }
 
