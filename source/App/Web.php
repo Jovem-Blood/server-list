@@ -6,6 +6,8 @@ namespace Source\App;
 use League\Plates\Engine;
 use Source\Models\{Servers, Tags, Times};
 
+use function PHPSTORM_META\type;
+
 class Web
 {
     private Engine $view;
@@ -167,7 +169,7 @@ class Web
 
             echo $this->view->render('config', [
                 'title' => 'Server-list | Configurations',
-                'server' => $this->servers->findServer($urlId, [], true),
+                'server' => $this->servers->findServer($urlId, ['server_id', 'name', 'description', 'invite'], true),
                 'allTags' => $this->tags->getAllTags()
             ]);
         }
@@ -180,13 +182,23 @@ class Web
             die();
         }
         $data = filter_var_array($data, FILTER_DEFAULT);
-        $errorMessage = [];
-        $invite = $data['invite'];
-        $description = $data['description'];
 
-        if (in_array('', $data)) {
+        if ($data['server'] === $data['static']) {
+            die();
+        }
+
+        $server = json_decode($data['server'], 1);
+        $static = json_decode($data['static'], 1);
+
+        $invite = $server['invite'];
+        $description = $server['description'];
+        $errorMessage = [];
+        $serverId = $data['serverId'];
+
+        if (in_array('', $server)) {
             array_push($errorMessage, 2);
         }
+
         if (strlen($description) > 140) {
             array_push($errorMessage, 3);
         }
@@ -202,20 +214,52 @@ class Web
             die();
         }
 
-        $result = $this->servers->updateServer(
-            $data['serverId'],
-            [
-                'invite' => $invite,
-                'description' => $description,
-                'published' => 1
-            ]
-        );
+        $serverTags = $server['tags'];
+        $staticTags = $static['tags'];
+        $column = 'tag_id';
+
+        $addedTags =
+            array_diff(
+                array_column($serverTags, $column),
+                array_column($staticTags, $column)
+            );
+
+        $removedTags =
+            array_diff(
+                array_column($staticTags, $column),
+                array_column($serverTags, $column)
+            );
+
+        $result =
+            $this->servers->updateServer(
+                $serverId,
+                [
+                    'update' => [
+                        'invite' => $invite,
+                        'description' => $description,
+                        'published' => 1
+                    ],
+                    'removedTags' => $removedTags,
+                    'addedTags' => $addedTags
+                ]
+            );
+
 
         if ($result) {
-            echo $result;
+            $response = [
+                'edit' => 'succsess',
+                'message' => 'Edição efeituada com sucesso'
+            ];
         } else {
-            echo '0';
+            $response = [
+                'edit' => 'error',
+                'message' => [
+                    'Erro inesperado, tente novamente mais tarde'
+                ]
+            ];
         }
+
+        echo json_encode($response);
     }
 
     public function vote($data)

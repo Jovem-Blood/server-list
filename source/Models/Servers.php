@@ -2,7 +2,8 @@
 
 namespace Source\Models;
 
-use Source\Models\Conect;
+use Opis\Database\Database;
+use Source\Models\Connect;
 use Source\Models\Tags;
 
 class Servers extends Connect
@@ -33,13 +34,29 @@ class Servers extends Connect
      * @return boolean
      */
 
-    public function updateServer(string $serverId, array $content): bool
+    public function updateServer(string $serverId, array $content)
     {
-
         $result =
-            $this->update('servers')
-            ->where('server_id')->is($serverId)
-            ->set($content);
+            $this->transaction(function (Database $db) use ($content, $serverId) {
+
+                $db->update('servers')
+                    ->where('server_id')->is($serverId)
+                    ->set($content['update']);
+
+                foreach ($content['addedTags'] as $tagId) {
+                    $db->insert(['server_id' => $serverId, 'tag_id' => $tagId])
+                        ->into('server_x_tag');
+                }
+
+                foreach ($content['removedTags'] as $tagId) {
+                    $db->from('server_x_tag')
+                        ->where('server_id')->is($serverId)
+                        ->andWhere('tag_id')->is($tagId)
+                        ->delete();
+                }
+
+                return true;
+            }, false);
 
         return $result;
     }

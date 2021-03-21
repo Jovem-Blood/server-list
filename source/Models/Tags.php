@@ -19,7 +19,7 @@ class Tags extends Connect
                 $join->on('x.tag_id', 't.tag_id');
             })
             ->where('s.server_id')->is($serverId)
-            ->select('t.name')
+            ->select(['t.name', 't.tag_id'])
             ->all();
 
         return $result;
@@ -29,7 +29,7 @@ class Tags extends Connect
     {
         $result =
             $this->from('tags')
-            ->select('name')
+            ->select()
             ->all();
         return $result;
     }
