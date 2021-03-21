@@ -1,24 +1,25 @@
 <?php
 
 
-namespace Source\App;
+namespace Source\Models;
 
+use Source\App\Session;
 
 class User
 {
     private string $name;
     private string $id;
     private string $avatar;
-    private object $servers;
+    private $guild;
 
     public function __construct()
     {
         $session = new Session();
-        if($session->has('user')) {
+        if ($session->has('user')) {
             $this->name = $session->user->username;
             $this->id = $session->user->id;
             $this->avatar = $session->user->avatar;
-            $this->servers = (object)$session->guilds;
+            $this->guild = $session->guilds;
         }
     }
 
@@ -43,15 +44,14 @@ class User
      */
     public function getAvatar(): string
     {
-        return userIcon($this->id,$this->avatar);
+        return userIcon($this->id, $this->avatar);
     }
 
     /**
      * @return object
      */
-    public function getServers(): object
+    public function getGuild(): object
     {
-        return $this->servers;
+        return $this->guild;
     }
-
 }

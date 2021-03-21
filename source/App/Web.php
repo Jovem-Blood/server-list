@@ -4,7 +4,7 @@ namespace Source\App;
 
 
 use League\Plates\Engine;
-use Source\Models\{Servers, Tags, Times};
+use Source\Models\{Servers, Tags, Times, User};
 
 use function PHPSTORM_META\type;
 
@@ -42,28 +42,29 @@ class Web
     public function profile()
     {
 
-        if ($this->session->has('user')) {
-            $userGuilds = $this->session->guilds;
-            $guilds = [];
-
-            foreach ($userGuilds as $guild) {
-                if ($guild->permissions == '2147483647') {
-                    $guild->exists = false;
-                    if ($this->servers->serverExists($guild->id)) {
-                        $guild->exists = true;
-                    }
-                    array_push($guilds, $guild);
-                }
-            }
-
-            echo $this->view->render("profile", [
-                'title' => 'Server-List | ' . $this->user->getName(),
-                'guilds' => $guilds,
-                'profile' => true
-            ]);
-        } else {
-            echo 'você não está logado ;-;';
+        if (!isLoged()) {
+            header('Location: ' . url('login'));
+            die();
         }
+
+        $userGuilds = $this->user->getGuild();
+        $guilds = [];
+
+        foreach ($userGuilds as $guild) {
+            if ($guild->permissions == '2147483647') {
+                $guild->exists = false;
+                if ($this->servers->serverExists($guild->id)) {
+                    $guild->exists = true;
+                }
+                array_push($guilds, $guild);
+            }
+        }
+
+        echo $this->view->render("profile", [
+            'title' => 'Server-List | ' . $this->user->getName(),
+            'guilds' => $guilds,
+            'profile' => true
+        ]);
     }
 
     public function login()
@@ -278,7 +279,7 @@ class Web
         $dateNow = new \DateTime();
         $server = $this->servers->findServer($urlId, ['name', 'votes']);
 
-        $result = $this->times->findTime($this->session->user->id, $urlId);
+        $result = $this->times->findTime($this->user->getId(), $urlId);
         $pageContent = [
             'title' => 'Server-list | ' . $server->name,
             'canVote' => true,
@@ -302,7 +303,7 @@ class Web
         } else {
             $now = $dateNow->format('c');
             $content = [
-                'user_id' => $this->session->user->id,
+                'user_id' => $this->user->getId(),
                 'server_id' => $urlId,
                 'time' => $dateNow->add(new \DateInterval('PT12H'))->format('c'),
                 'createdAt' => $now,
