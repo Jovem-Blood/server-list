@@ -8,7 +8,7 @@
       </div>
     </transition-group>
     <div class="form-area">
-      <form :action="formInfo.rote" method="post" @submit.prevent="send">
+      <form :action="rote" method="post" @submit.prevent="verify">
         <div class="w-75 m-auto form-group row">
           <label class="col-sm-4 col-form-label" for="invite">
             Convite para o servidor(Tem que ser permanente)
@@ -19,7 +19,7 @@
               type="text"
               id="invite"
               name="invite"
-              v-model="formInfo.server.invite"
+              v-model="server.invite"
               placeholder="https://discord.gg/abcdfgh"
             />
           </div>
@@ -32,23 +32,32 @@
               class="form-control"
               type="text"
               id="description"
-              v-model="formInfo.server.description"
+              v-model="server.description"
               name="description"
               placeholder="Um servidor amigável"
             />
             <div class="input-group-prepend">
               <div
                 class="input-group-text"
-                v-bind:class="{ 'text-danger': descTooLong }"
+                :class="{ 'text-danger': descTooLong }"
               >
                 {{ counter }}
               </div>
             </div>
           </div>
 
+          <label class="col-sm-4 col-form-label" for="tags"> Tags </label>
+
           <div class="input-group col-sm-8">
-            <label for="tags">Tags</label>
+            <Multiselect
+              v-model="server.tags"
+              :options="allTags"
+              track-by="name"
+              :custom-label="(e) => e.name"
+              :multiple="true"
+            />
           </div>
+
           <div class="col-sm m-3">
             <input class="btn btn-primary" type="submit" value="Editar" />
           </div>
@@ -59,23 +68,27 @@
 </template>
 
 <script>
+import Multiselect from "vue-multiselect";
+
 export default {
-  name: "Edit",
+  name: "EditForm",
+  components: {
+    Multiselect,
+  },
   props: {
     content: String,
   },
   data() {
     return {
-      formInfo: {
-        server: {
-          invite: "",
-          description: "",
-          tags: [],
-        },
-        allTags: [],
-        rote: "",
-        csrf: "",
+      server: {
+        invite: "",
+        description: "",
+        tags: [],
       },
+      staticServer: "",
+      allTags: [],
+      rote: "",
+      csrf: "",
       code: [],
     };
   },
@@ -91,61 +104,57 @@ export default {
         this.code.splice(0, this.code.length);
       }, 3000);
     },
-    send() {
-      let canSend = true;
-      let description = this.formInfo.server.description;
-      let invite = this.formInfo.server.invite;
+    verify() {
+      let server = JSON.stringify(this.server);
+      let staticServer = this.staticServer;
 
-      if (description == "" || invite == "") {
-        this.sendAlert(0, "Preencha todos os campos do formuário");
-        canSend = false;
+      if (server === staticServer) {
+        this.sendAlert(0, "Faça alguma alteração para conseguir enviar");
+        return;
       }
 
-      if (description.length > 140) {
+      for (let item in JSON.parse(server)) {
+        if (JSON.parse(server)[item] == "") {
+          this.sendAlert(0, "Preencha todos os campos do formuário");
+          return;
+        }
+      }
+
+      if (this.server.description.length > 140) {
         this.sendAlert(0, "Sua descrição é muito grande");
-        canSend = false;
+        return;
       }
 
-      if (canSend === true) {
-        let data = new FormData();
-        data.append("invite", invite);
-        data.append("description", description);
-        data.append("csrf", this.formInfo.csrf);
-        fetch(this.formInfo.rote, {
-          method: "POST",
-          body: data,
-        }).then((resp) => {
-          resp.text().then((code) => {
-            //:TODO remover esse switch
-            switch (code) {
-              case "0":
-                this.sendAlert(0, "Erro ao salvar, tente novamente mais tarde");
-                break;
-              case "1":
-                this.sendAlert(1, "Edição efeituada com sucesso!");
-                break;
-              case "2":
-                this.sendAlert(0, "Preencha todos os campos do formuário");
-                break;
-              case "3":
-                this.sendAlert(0, "Sua descrição é muito grande");
-                break;
-              case "23":
-                this.sendAlert(0, "Preencha todos os campos do formuário");
-                this.sendAlert(0, "Sua descrição é muito grande");
-                break;
-              default:
-                this.sendAlert(0, code);
-                break;
-            }
-          });
+      this.send(server, staticServer);
+    },
+    send(server, staticServer) {
+      let data = new FormData();
+      data.append("server", server);
+      data.append("static", staticServer);
+      data.append("all-tags", JSON.stringify(this.allTags));
+
+      fetch(this.rote, {
+        method: "POST",
+        body: data,
+      }).then((resp) => {
+        resp.text().then((json) => {
+          console.log(json);
+          json = JSON.parse(json);
+          if (json.edit === "succsess") {
+            this.staticServer = server;
+            this.sendAlert(1, json.message);
+          } else {
+            json.message.forEach((msg) => {
+              this.sendAlert(0, msg);
+            });
+          }
         });
-      }
+      });
     },
   },
   computed: {
     counter: function () {
-      return 140 - this.formInfo.server.description.length;
+      return 140 - this.server.description.length;
     },
     descTooLong: function () {
       if (this.counter < 0) {
@@ -156,13 +165,34 @@ export default {
   },
   created() {
     if (this.content) {
-      this.formInfo = JSON.parse(this.content);
+      let content = JSON.parse(this.content);
+      this.server = content.server;
+      this.staticServer = JSON.stringify(content.server);
+      this.allTags = content.allTags;
+      this.rote = content.rote;
+      this.csrf = content.csrf;
     }
   },
 };
 </script>
 
-<style scoped>
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+
+<style >
+.multiselect__tag-icon:focus,
+.multiselect__tag-icon:hover {
+  background: #ff6a6a;
+}
+.multiselect__tag,
+.multiselect__option--highlight::after,
+.multiselect__option--highlight {
+  background: #4e6c9d;
+}
+
+.multiselect__tag-icon:after {
+  color: #3a5279;
+}
+
 .server-title {
   display: flex;
   margin: 2%;
