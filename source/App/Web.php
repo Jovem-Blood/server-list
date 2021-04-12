@@ -6,8 +6,6 @@ namespace Source\App;
 use League\Plates\Engine;
 use Source\Models\{Servers, Tags, Times, User};
 
-use function PHPSTORM_META\type;
-
 class Web
 {
     private Engine $view;
