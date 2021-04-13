@@ -131,6 +131,7 @@ export default {
       let data = new FormData();
       data.append("server", server);
       data.append("static", staticServer);
+      data.append("csrf", this.csrf)
       data.append("all-tags", JSON.stringify(this.allTags));
 
       fetch(this.rote, {
