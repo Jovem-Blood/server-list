@@ -13,6 +13,7 @@ $router->get('/', "Web:home");
 $router->get('/login', "Web:login");
 $router->get('/logout', "Web:logout");
 $router->get('/profile', "Web:profile");
+$router->get('/search/{q}', "web:search");
 
 /*
  * Servers
@@ -36,13 +37,6 @@ $router->post('/rank', "Api:rank");
 $router->post('/create', "Api:create");
 $router->post('/update', "Api:update");
 $router->post('/delete', "Api:delete");
-
-/*
-* Search
-*/
-
-$router->group('s');
-$router->post('/{query}', "Web:search");
 
 /*
  * Errors and Dispatch

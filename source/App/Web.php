@@ -37,6 +37,11 @@ class Web
         ]);
     }
 
+    public function search($data)
+    {
+        var_dump($data);
+    }
+
     public function profile()
     {
 
