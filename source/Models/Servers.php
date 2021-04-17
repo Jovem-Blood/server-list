@@ -104,6 +104,26 @@ class Servers extends Connect
         return $result;
     }
 
+    public function search(string $query)
+    {
+        $words = explode(" ", $query);
+        $wordsCount = count($words);
+
+        $sql =
+            $this->from('servers')
+            ->where('name')->like("%" . $words[0] . "%");
+
+
+        if ($wordsCount > 1) {
+            for ($i = 1; $i < $wordsCount; $i++) {
+                empty($words[$i]) ?: $sql->orWhere('name')->like("%" . $words[$i] . "%");
+            }
+        }
+
+        $result = $sql->select()->all();
+        return $result;
+    }
+
     /**
      * Adiciona +1 na contagem de votos de um servidor
      *

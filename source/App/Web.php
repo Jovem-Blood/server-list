@@ -39,7 +39,12 @@ class Web
 
     public function search($data)
     {
-        var_dump($data);
+        $q = $data['q'];
+        echo "<pre>";
+        var_dump(
+            $this->servers->search($q)
+        );
+        echo "</pre>";
     }
 
     public function profile()
