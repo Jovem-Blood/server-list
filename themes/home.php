@@ -1,11 +1,6 @@
 <?php $v->layout('_theme');
 $v->start('styles'); ?>
 <style>
-    .content {
-        width: 100%;
-        padding: 3px;
-    }
-
     .section-title {
         display: flex;
         align-items: center;

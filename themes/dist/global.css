@@ -46,7 +46,8 @@ body {
 }
 
 .content {
-
+    width: 100%;
+    padding: 3px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
