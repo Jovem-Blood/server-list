@@ -40,11 +40,10 @@ class Web
     public function search($data)
     {
         $q = $data['q'];
-        echo "<pre>";
-        var_dump(
-            $this->servers->search($q)
-        );
-        echo "</pre>";
+        echo $this->view->render("search", [
+            'title' => 'Server-List',
+            'servers' => $this->servers->search($q)
+        ]);
     }
 
     public function profile()
