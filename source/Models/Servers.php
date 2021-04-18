@@ -5,6 +5,7 @@ namespace Source\Models;
 use Opis\Database\Database;
 use Source\Models\Connect;
 use Source\Models\Tags;
+use CoffeeCode\Paginator\Paginator;
 
 class Servers extends Connect
 {
@@ -104,11 +105,10 @@ class Servers extends Connect
         return $result;
     }
 
-    public function search(string $query)
+    public function search(string $query, ?int $page)
     {
         $words = explode(" ", $query);
         $wordsCount = count($words);
-
         $sql =
             $this->from('servers')
             ->where('name')->like("%" . $words[0] . "%");
@@ -119,8 +119,17 @@ class Servers extends Connect
                 empty($words[$i]) ?: $sql->orWhere('name')->like("%" . $words[$i] . "%");
             }
         }
+        $query = str_replace(" ", "+", $query);
+        $pager = new Paginator("?q=$query&page=");
+        $pager->pager((clone $sql)->count(), 2, $page);
 
-        $result = $sql->select()->all();
+        $result['servers'] =
+            $sql->orderBy('votes', 'desc')
+            ->limit($pager->limit())
+            ->offset($pager->offset())
+            ->select()->all();
+
+        $result['pager'] = $pager;
         return $result;
     }
 

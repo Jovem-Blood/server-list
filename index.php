@@ -13,7 +13,7 @@ $router->get('/', "Web:home");
 $router->get('/login', "Web:login");
 $router->get('/logout', "Web:logout");
 $router->get('/profile', "Web:profile");
-$router->get('/search/{q}', "web:search");
+$router->get('/search/', "web:search");
 
 /*
  * Servers

@@ -39,10 +39,17 @@ class Web
 
     public function search($data)
     {
+        if (empty($data['q'])) {
+            $this->error(['errcode' => '404']);
+            die();
+        }
         $q = $data['q'];
+        $page = filter_var(($data['page'] ?? 1), FILTER_VALIDATE_INT);
+        $result = $this->servers->search($q, $page);
         echo $this->view->render("search", [
             'title' => 'Server-List',
-            'servers' => $this->servers->search($q)
+            'servers' => $result['servers'],
+            'pager' => $result['pager']
         ]);
     }
 

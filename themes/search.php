@@ -30,4 +30,5 @@ $v->start('styles'); ?>
             </div>
         <?php endforeach; ?>
     </main>
+    <?= $pager->render(null, true) ?>
 </div>
