@@ -303,6 +303,7 @@ class Web
         if ($result) {
             //$userTime = new \DateTime('2020-10-05T04:05:18.134-03:00');
             $userTime = new \DateTime($result->time);
+
             if ($dateNow >= $userTime) {
                 $this->servers->addVote($urlId);
                 $pageContent['timer'] = $this->times->updateTime($result->id);
@@ -315,13 +316,10 @@ class Web
                 ]);
             }
         } else {
-            $now = $dateNow->format('c');
             $content = [
                 'user_id' => $this->user->getId(),
                 'server_id' => $urlId,
-                'time' => $dateNow->add(new \DateInterval('PT12H'))->format('c'),
-                'createdAt' => $now,
-                'updatedAt' => $now
+                'time' => $dateNow->add(new \DateInterval('PT12H'))->format('c')
             ];
 
             $this->servers->addVote($urlId);
