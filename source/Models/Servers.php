@@ -146,14 +146,7 @@ class Servers extends Connect
         $result =
             $this->update('servers')
             ->where('server_id')->is($serverId)
-            ->set(
-                array(
-                    'votes' => function ($expr) {
-                        $expr->column('votes')->{'+'}->value(1);
-                    },
-                    'updatedAt' => date('Y-m-d H:i:s')
-                )
-            );
+            ->increment('votes');
         return $result;
     }
 
