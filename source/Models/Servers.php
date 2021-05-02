@@ -111,7 +111,8 @@ class Servers extends Connect
         $wordsCount = count($words);
         $sql =
             $this->from('servers')
-            ->where('name')->like("%" . $words[0] . "%");
+            ->where('published')->is(1)
+            ->andwhere('name')->like("%" . $words[0] . "%");
 
 
         if ($wordsCount > 1) {
@@ -164,7 +165,7 @@ class Servers extends Connect
      * @return array
      */
 
-    public function publishes(int $limit = 6, array $colum = []): array
+    public function publishes(int $limit = 8, array $colum = []): array
     {
         $result =
             $this->from('servers')
