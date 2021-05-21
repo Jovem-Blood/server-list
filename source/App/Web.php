@@ -39,11 +39,11 @@ class Web
 
     public function search($data)
     {
-        if (empty($data['q'])) {
+        if (empty($data['GET']['q'])) {
             $this->error(['errcode' => '404']);
             die();
         }
-        $q = $data['q'];
+        $q = $data['GET']['q'];
         $page = filter_var(($data['page'] ?? 1), FILTER_VALIDATE_INT);
         $result = $this->servers->search($q, $page);
         echo $this->view->render("search", [
