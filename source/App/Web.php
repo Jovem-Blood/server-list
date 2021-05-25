@@ -44,7 +44,7 @@ class Web
             die();
         }
         $q = $data['GET']['q'];
-        $page = filter_var(($data['page'] ?? 1), FILTER_VALIDATE_INT);
+        $page = filter_var(($data['GET']['page'] ?? 1), FILTER_VALIDATE_INT);
         $result = $this->servers->search($q, $page);
         echo $this->view->render("search", [
             'title' => 'Server-List',
