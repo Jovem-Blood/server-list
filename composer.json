@@ -28,6 +28,10 @@
     "opis/database": "^4.1",
     "ext-json": "*",
     "ext-curl": "*",
-    "coffeecode/paginator": "dev-master"
+    "coffeecode/paginator": "dev-master",
+    "pusher/pusher-push-notifications": "dev-master"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "9"
   }
 }
