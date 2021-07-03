@@ -147,6 +147,7 @@ class Servers extends Connect
             $this->update('servers')
             ->where('server_id')->is($serverId)
             ->increment('votes');
+
         return $result;
     }
 
@@ -154,18 +155,18 @@ class Servers extends Connect
      * Retorna um array com os servidores que estão publicados
      *
      * @param integer $limit
-     * @param array $colum
+     * @param array $column
      * @return array
      */
 
-    public function publishes(int $limit = 8, array $colum = []): array
+    public function publishes(int $limit = 8, array $column = []): array
     {
         $result =
             $this->from('servers')
             ->where('published')->is(1)
             ->orderBy('votes', 'desc')
             ->limit($limit)
-            ->select($colum)
+            ->select($column)
             ->all();
         return $result;
     }
