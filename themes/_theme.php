@@ -23,7 +23,7 @@
 
 
 <body>
-    <?php $v->insert('components/navbar', ['profile' => isset($profile) ? true : false]); // Navbar
+    <?php $v->insert('components/navbar', ['profile' => ($profile ?? false)]); // Navbar
     ?>
 
     <div id="app">
