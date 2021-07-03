@@ -14,6 +14,7 @@ $router->get('/login', "Web:login");
 $router->get('/logout', "Web:logout");
 $router->get('/profile', "Web:profile");
 $router->get('/search/', "web:search");
+$router->get('/pusher/beams-auth', "Web:beamsAuth");
 
 /*
  * Servers

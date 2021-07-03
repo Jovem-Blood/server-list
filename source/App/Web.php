@@ -4,6 +4,7 @@ namespace Source\App;
 
 
 use League\Plates\Engine;
+use Pusher\PushNotifications\PushNotifications;
 use Source\Models\{Servers, Tags, Times, User};
 
 class Web
@@ -77,6 +78,7 @@ class Web
         echo $this->view->render("profile", [
             'title' => 'Server-List | ' . $this->user->getName(),
             'guilds' => $guilds,
+            'userId' => $this->user->getId(),
             'profile' => true
         ]);
     }
@@ -333,8 +335,31 @@ class Web
     public function join($data)
     {
         $urlId = $data['serverId'];
-        $server = $this->servers->findServer($urlId);
-        var_dump($server->invite);
+        if(!$server = $this->servers->findServer($urlId)) {
+            $this->error([
+                'errcode' => '404'
+            ]);
+            die();
+        }
+        redirect($server->invite, false);
+    }
+
+    public function beamsAuth($data)
+    {
+        $query = $data['GET'];
+        if (!isLoged() || !isset($query['user_id'])) {
+            echo json_encode(["message" => "Usuário não está logado"]);
+            die();
+        }
+        if ($query['user_id'] !== $this->user->getId()) {
+            echo json_encode(["message" => "Inconsistent request"]);
+        } else {
+            echo json_encode((new PushNotifications([
+                "instanceId"=>INSTANCE_ID,
+                "secretKey" => PUSHER_KEY
+                ]))->generateToken($query['user_id']));
+        }
+
     }
 
     public function error($data)
