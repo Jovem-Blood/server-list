@@ -3,8 +3,6 @@
 namespace Source\Models;
 
 use Opis\Database\Database;
-use Source\Models\Connect;
-use Source\Models\Tags;
 use CoffeeCode\Paginator\Paginator;
 
 class Servers extends Connect
@@ -20,24 +18,20 @@ class Servers extends Connect
     public function createServer($content): bool
     {
         $content = (array)$content;
-        $result =
-            $this->insert($content)
-            ->into('servers');
-
-        return $result;
+        return $this->insert($content)->into('servers');
     }
 
     /**
      * Atualiza os valores de um servidor do banco de dados
      *
      * @param string $serverId
-     * @param array $content o conteúdo que vai ser alterado 
+     * @param array $content o conteúdo que vai ser alterado
      * @return boolean
      */
 
-    public function updateServer(string $serverId, array $content)
+    public function updateServer(string $serverId, array $content): bool
     {
-        $result =
+        return
             $this->transaction(function (Database $db) use ($content, $serverId) {
 
                 $db->update('servers')
@@ -58,8 +52,6 @@ class Servers extends Connect
 
                 return true;
             }, false);
-
-        return $result;
     }
 
 
@@ -72,20 +64,17 @@ class Servers extends Connect
 
     public function deleteServer(string $serverId): bool
     {
-
-        $result =
+        return
             $this->from('servers')
-            ->where('server_id')->is($serverId)
-            ->delete();
-
-        return $result;
+                ->where('server_id')->is($serverId)
+                ->delete();
     }
 
     /**
      * Encontra um servidor no banco e retorna um objeto, caso não exista retorna false
      *
      * @param string $serverId
-     * @param array $columns Caso seja necessário buscar colunas expecíficas
+     * @param array $columns Caso seja necessário buscar colunas específicas
      * @param bool $fetchTags Caso seja true, trará as tags do servidor
      * @return object|bool
      */
@@ -94,9 +83,9 @@ class Servers extends Connect
     {
         $result =
             $this->from('servers')
-            ->where('server_id')->is($serverId)
-            ->select($columns)
-            ->first();
+                ->where('server_id')->is($serverId)
+                ->select($columns)
+                ->first();
 
         if ($fetchTags == true && $result == true) {
             $result->tags = (new Tags)->getServerTags($serverId);
@@ -105,14 +94,21 @@ class Servers extends Connect
         return $result;
     }
 
-    public function search(string $query, ?int $page)
+    /**
+     * Pesquisa por servidores usando palavras chave
+     *
+     * @param string $query o nome do servidor ou parte dele
+     * @param int|null $page o número da paginação
+     * @return array
+     */
+    public function search(string $query, ?int $page): array
     {
         $words = explode(" ", $query);
         $wordsCount = count($words);
         $sql =
             $this->from('servers')
-            ->where('published')->is(1)
-            ->andwhere('name')->like("%" . $words[0] . "%");
+                ->where('published')->is(1)
+                ->andwhere('name')->like("%" . $words[0] . "%");
 
 
         if ($wordsCount > 1) {
@@ -126,9 +122,9 @@ class Servers extends Connect
 
         $result['servers'] =
             $sql->orderBy('votes', 'desc')
-            ->limit($pager->limit())
-            ->offset($pager->offset())
-            ->select()->all();
+                ->limit($pager->limit())
+                ->offset($pager->offset())
+                ->select()->all();
 
         $result['pager'] = $pager;
         return $result;
@@ -143,12 +139,10 @@ class Servers extends Connect
 
     public function addVote(string $serverId): bool
     {
-        $result =
+        return
             $this->update('servers')
-            ->where('server_id')->is($serverId)
-            ->increment('votes');
-
-        return $result;
+                ->where('server_id')->is($serverId)
+                ->increment('votes');
     }
 
     /**
@@ -161,14 +155,13 @@ class Servers extends Connect
 
     public function publishes(int $limit = 8, array $column = []): array
     {
-        $result =
+        return
             $this->from('servers')
-            ->where('published')->is(1)
-            ->orderBy('votes', 'desc')
-            ->limit($limit)
-            ->select($column)
-            ->all();
-        return $result;
+                ->where('published')->is(1)
+                ->orderBy('votes', 'desc')
+                ->limit($limit)
+                ->select($column)
+                ->all();
     }
 
     /**
